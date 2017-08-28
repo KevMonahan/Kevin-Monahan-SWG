@@ -15,20 +15,21 @@ import java.util.Scanner;
  */
 public class RockPaperScissors {
 
-    public static void main(String[] args) {
-        int usersChoice;
+    public static void main(String[] args) {       
+        boolean playAgain;
+        
+        
+
+        do {
+            int usersChoice;
         Random computersChoice = new Random(3);
         Scanner sc = new Scanner(System.in);
         ArrayList userThrows = new ArrayList();
         ArrayList computerThrows = new ArrayList();
-        int userSize = userThrows.size();
-        boolean playAgain;
-        int numOfTies = 0;
+            Scanner sc2 = new Scanner(System.in);
+            int numOfTies = 0;
         int playerWins = 0;
         int computerWins = 0;
-        Scanner sc2 = new Scanner(System.in);
-
-        do {
 
             System.out.println("Thanks for coming to play Rock Paper Scissors! "
                     + "How many rounds would you like to play?"
@@ -75,20 +76,21 @@ public class RockPaperScissors {
             System.out.println("The user's throws are as follows: " + userThrows);
             System.out.println("Computer's throws are as follows: " + computerThrows);
 
-            for (int j = 0; j <= userSize; j++) {
+            int userSize = userThrows.size();
+            for (int j = 0; j < userSize; j++) {
                 if (userThrows.get(j) == computerThrows.get(j)) {
                     numOfTies += 1;
-                } else if ((int) userThrows.get(j) == 2 && (int) computerThrows.get(j) == 0) {
+                } if ((int) userThrows.get(j) == 2 && (int) computerThrows.get(j) == 0) {
                     playerWins += 1;
-                } else if ((int) userThrows.get(j) == 2 && (int) computerThrows.get(j) == 1) {
+                } if ((int) userThrows.get(j) == 2 && (int) computerThrows.get(j) == 1) {
                     computerWins += 1;
-                } else if ((int) userThrows.get(j) == 1 && (int) computerThrows.get(j) == 0) {
+                } if ((int) userThrows.get(j) == 1 && (int) computerThrows.get(j) == 0) {
                     playerWins += 1;
-                } else if ((int) userThrows.get(j) == 1 && (int) computerThrows.get(j) == 2) {
+                } if ((int) userThrows.get(j) == 1 && (int) computerThrows.get(j) == 2) {
                     computerWins += 1;
-                } else if ((int) userThrows.get(j) == 0 && (int) computerThrows.get(j) == 2) {
+                } if ((int) userThrows.get(j) == 0 && (int) computerThrows.get(j) == 2) {
                     playerWins += 1;
-                } else if ((int) userThrows.get(j) == 0 && (int) computerThrows.get(j) == 1) {
+                } if ((int) userThrows.get(j) == 0 && (int) computerThrows.get(j) == 1) {
                     computerWins += 1;
                 } else {
                 }
@@ -99,7 +101,8 @@ public class RockPaperScissors {
 
             System.out.println("That was fun wasn't it? To play again type 'true'. To quit, type 'false'.");
             playAgain = sc2.nextBoolean();
-
+        
         } while (playAgain == true);
     }
 }
+
