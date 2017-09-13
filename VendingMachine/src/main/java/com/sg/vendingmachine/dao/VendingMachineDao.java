@@ -5,10 +5,18 @@
  */
 package com.sg.vendingmachine.dao;
 
+import com.sg.vendingmachine.dto.VendingMachineInsertedMoney;
+import com.sg.vendingmachine.dto.VendingMachineItems;
+import java.math.BigDecimal;
+import java.util.List;
+
 /**
  *
  * @author user
  */
 public interface VendingMachineDao {
+    public List<VendingMachineItems> listItem() throws VendingMachinePersistenceException;
+    
+    public VendingMachineItems getItems(String itemId) throws VendingMachinePersistenceException;
     
 }

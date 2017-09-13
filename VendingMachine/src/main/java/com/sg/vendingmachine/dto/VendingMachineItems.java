@@ -11,8 +11,8 @@ import java.math.BigDecimal;
  *
  * @author user
  */
-public class VendingMachineItems {
-    private int itemId;
+    public class VendingMachineItems {
+    private String itemId;
     private String itemName;
     private BigDecimal itemPrice;
     private int itemQuantity;
@@ -20,16 +20,14 @@ public class VendingMachineItems {
     /**
      * @return the itemId
      */
-    public int getItemId() {
-        return itemId;
+    public VendingMachineItems(String itemId) {
+        this.itemId = itemId;
     }
 
     /**
      * @param itemId the itemId to set
      */
-    public void setItemId(int itemId) {
-        this.itemId = itemId;
-    }
+    
 
     /**
      * @return the itemName
@@ -71,6 +69,10 @@ public class VendingMachineItems {
      */
     public void setItemQuantity(int itemQuantity) {
         this.itemQuantity = itemQuantity;
+    }
+    
+    public String getItemId() {
+        return itemId;
     }
     
     

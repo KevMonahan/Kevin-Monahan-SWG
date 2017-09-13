@@ -6,12 +6,11 @@
 package com.sg.vendingmachine.controller;
 
 import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
+import com.sg.vendingmachine.dto.VendingMachineChange;
 import com.sg.vendingmachine.service.VendingMachineServiceLayer;
-import com.sg.vendingmachine.ui.UserIO;
-import com.sg.vendingmachine.ui.UserIOConsoleImpl;
 import com.sg.vendingmachine.ui.VendingMachineView;
-import com.sg.vendingmachine.dto.VendingMachineInsertedMoney;
 import com.sg.vendingmachine.dto.VendingMachineItems;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -19,10 +18,12 @@ import java.util.List;
  * @author user
  */
 public class VendingMachineController {
+    BigDecimal currentAmount;
+    
     
     VendingMachineView view;
     VendingMachineServiceLayer service;
-    private UserIO io = new UserIOConsoleImpl();
+
     
     public void run() {
         boolean keepGoing = true;
@@ -62,10 +63,8 @@ public class VendingMachineController {
         view.displayInsertMoneyBanner();
         boolean hasErrors = false;
         do {
-            VendingMachineInsertedMoney currentAmount = view.getInsertedAmount();
-
-                service.insertMoney(amounts);
-                view.displayInsertedMoneySuccessBanner();
+            BigDecimal currentAmount = view.getVendingMachineInsertedAmount();
+            service.insertedMoney(currentAmount);
                 hasErrors = false;
         } while (hasErrors);
     }
@@ -77,10 +76,12 @@ public class VendingMachineController {
     }
     
     private void makeItemSelection() throws VendingMachinePersistenceException {
-        view.displayDisplayItemSelectionBanner();
-        String itemSelection = view.getItemIdSelection();
-        VendingMachineItems item = service.getItemSelection(itemId);
-        view.displayItem (item);
+        String itemId = view.getItemIdSelection();
+        VendingMachineItems item = service.getItem(itemId);
+        BigDecimal change = service.getChange(item);
+        VendingMachineChange coinsReturned = service.calculateCoins(change);
+        view.displayItem(item);
+        view.displayChange(coinsReturned);             
     }
     
     private void unknownCommand() {

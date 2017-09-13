@@ -117,10 +117,5 @@ public class UserIOConsoleImpl implements UserIO {
          String input = sc.nextLine();
          return input;
     }
-
-    @Override
-    public void print(VendingMachineItems currentItem) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
 }

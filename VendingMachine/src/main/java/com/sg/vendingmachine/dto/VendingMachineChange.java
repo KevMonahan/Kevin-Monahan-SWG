@@ -12,80 +12,88 @@ import java.math.BigDecimal;
  * @author user
  */
 public class VendingMachineChange {
-    private BigDecimal change;
-    private double quarters;
-    private double dollars;
-    private double nickels;
-    private double dimes;
-
-    /**
-     * @return the change
-     */
-    public BigDecimal getChange() {
-        return change;
-    }
-
-    /**
-     * @param change the change to set
-     */
-    public void setChange(BigDecimal change) {
-        this.change = change;
+    private int quarters;
+    private int dollars;
+    private int nickels;
+    private int dimes;
+    private int pennies;
+    
+    public VendingMachineChange(int dollars, int quarters, int dimes, int nickels, int pennies){
+    this.dollars = dollars;
+    this.quarters = quarters;
+    this.dimes = dimes;
+    this.nickels = nickels;
+    this.pennies = pennies;
     }
 
     /**
      * @return the quarters
      */
-    public double getQuarters() {
+    public int getQuarters() {
         return quarters;
     }
 
     /**
      * @param quarters the quarters to set
      */
-    public void setQuarters(double quarters) {
+    public void setQuarters(int quarters) {
         this.quarters = quarters;
     }
 
     /**
      * @return the dollars
      */
-    public double getDollars() {
+    public int getDollars() {
         return dollars;
     }
 
     /**
      * @param dollars the dollars to set
      */
-    public void setDollars(double dollars) {
+    public void setDollars(int dollars) {
         this.dollars = dollars;
     }
 
     /**
      * @return the nickels
      */
-    public double getNickels() {
+    public int getNickels() {
         return nickels;
     }
 
     /**
      * @param nickels the nickels to set
      */
-    public void setNickels(double nickels) {
+    public void setNickels(int nickels) {
         this.nickels = nickels;
     }
 
     /**
      * @return the dimes
      */
-    public double getDimes() {
+    public int getDimes() {
         return dimes;
     }
 
     /**
      * @param dimes the dimes to set
      */
-    public void setDimes(double dimes) {
+    public void setDimes(int dimes) {
         this.dimes = dimes;
+    }
+
+    /**
+     * @return the pennies
+     */
+    public int getPennies() {
+        return pennies;
+    }
+
+    /**
+     * @param pennies the pennies to set
+     */
+    public void setPennies(int pennies) {
+        this.pennies = pennies;
     }
     
 }
