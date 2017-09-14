@@ -25,4 +25,8 @@ public interface DVDLibraryDao {
 
     DVD removeDVD(String dvdId)
             throws DVDLibraryDaoException;
+    
+    DVD editDVD(String dvdId, DVD dvd)
+            throws DVDLibraryDaoException;
+    
 }

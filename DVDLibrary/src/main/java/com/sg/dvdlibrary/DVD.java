@@ -16,7 +16,6 @@ public class DVD {
     private String releaseDate;
     private String mpaaRating;
     private String directorsName;
-    private String dvd;
     private String studio;
     private String userRating;
 

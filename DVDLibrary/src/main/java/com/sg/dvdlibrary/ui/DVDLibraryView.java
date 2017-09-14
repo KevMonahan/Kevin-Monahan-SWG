@@ -22,9 +22,10 @@ public class DVDLibraryView {
         io.print("2. Create New DVD");
         io.print("3. View a DVD");
         io.print("4. Remove a DVD");
-        io.print("5. Exit");
+        io.print("5. Edit a DVD");
+        io.print("6. Exit");
 
-        return io.readInt("Please select from the above choices.", 1, 5);
+        return io.readInt("Please select from the above choices.", 1, 6);
     }
 
     public DVD getNewDVDInfo() {
@@ -53,6 +54,10 @@ public class DVDLibraryView {
         io.readString(
                 "DVD successfully created.  Please hit enter to continue");
     }
+    
+    public void displayEditDVDSuccessBanner() {
+        io.print("You have successfully edited your DVD");
+    }
 
     public void displayDVDList(List<DVD> dvdList) {
         for (DVD currentDVD : dvdList) {
@@ -78,6 +83,8 @@ public class DVDLibraryView {
     public String getDVDIdChoice() {
         return io.readString("Please enter the DVD ID.");
     }
+    
+    
 
     public void displayDVD(DVD dvd) {
         if (dvd != null) {
@@ -118,5 +125,13 @@ public class DVDLibraryView {
     public void displayErrorMessage(String errorMsg) {
         io.print("=== ERROR ===");
         io.print(errorMsg);
+    }
+    
+    public void displayEditDVDBanner() {
+        io.print("===You have chosen to edit a DVD ===");
+    }
+    
+    public String getDVDTitle() {
+        return io.readString("Please enter the ID of the DVD you would like to edit.");
     }
 }

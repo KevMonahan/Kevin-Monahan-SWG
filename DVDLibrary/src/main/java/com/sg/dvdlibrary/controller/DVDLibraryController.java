@@ -27,17 +27,12 @@ public class DVDLibraryController {
         boolean keepGoing = true;
         int menuSelection = 0;
         try {
+            
             while (keepGoing) {
-                io.print("Main Menu");
-                io.print("1. List DVDs");
-                io.print("2. Add new DVD");
-                io.print("3. View DVD info");
-                io.print("4. Remove a DVD");
-                io.print("5. Exit");
-
-                menuSelection = io.readInt("Please select from the"
-                        + " above choices.", 1, 5);
-
+                
+                menuSelection = getMenuSelection();
+                
+                
                 switch (menuSelection) {
                     case 1:
                         listDVDs();
@@ -52,6 +47,9 @@ public class DVDLibraryController {
                         removeDVD();
                         break;
                     case 5:
+                        editDVD();
+                        break;
+                    case 6:
                         keepGoing = false;
                         break;
                     default:
@@ -72,7 +70,7 @@ public class DVDLibraryController {
     private void createDVD() throws DVDLibraryDaoException {
         view.displayCreateDVDBanner();
         DVD newDVD = view.getNewDVDInfo();
-        dao.addDVD(newDVD.getTitle(), newDVD);
+        dao.addDVD(newDVD.getDvdId(), newDVD);
         view.displayCreateSuccessBanner();
     }
 
@@ -94,6 +92,15 @@ public class DVDLibraryController {
         String dvdId = view.getDVDIdChoice();
         dao.removeDVD(dvdId);
         view.displayRemoveSuccessBanner();
+    }
+    
+    private void editDVD() throws DVDLibraryDaoException {
+        view.displayEditDVDBanner();
+        String id = view.getDVDTitle();
+        DVD editDvd = view.getNewDVDInfo();
+        dao.removeDVD(id);
+        dao.editDVD(editDvd.getDvdId(), editDvd);
+        view.displayEditDVDSuccessBanner();
     }
 
     private void unknownCommand() {
