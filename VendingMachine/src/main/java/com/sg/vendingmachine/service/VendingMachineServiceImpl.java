@@ -39,16 +39,27 @@ public class VendingMachineServiceImpl implements VendingMachineServiceLayer {
     }
 
     @Override
-    public VendingMachineItems getItem(String itemId) throws VendingMachinePersistenceException {
+    public VendingMachineItems getItem(String itemId) throws VendingMachinePersistenceException, InsufficientQuantityException{
         currentItem = dao.getItems(itemId);
-        return currentItem;
+        if (currentItem.getItemQuantity() > 0){
+            currentItem.setItemQuantity(currentItem.getItemQuantity()-1);
+            return currentItem;
+        }
+        else {
+            throw new InsufficientQuantityException("Error: Your Item Selection Is Out Of Stock! Please Make Another Selection!");
+        }
     }
 
     @Override
-    public BigDecimal getChange(VendingMachineItems currentItem) throws VendingMachinePersistenceException {
+    public BigDecimal getChange(VendingMachineItems currentItem) throws VendingMachinePersistenceException, InsufficientFundsException {
         BigDecimal bd = currentItem.getItemPrice();
+        if(totalStoredAmount.compareTo(bd) >= 0) {
         change = totalStoredAmount.subtract(bd);
         return change;
+        } else {
+            throw new InsufficientFundsException ("Error: Insufficient Funds. Please Insert More Money");
+        }
+        
     }
 
     @Override

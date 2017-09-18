@@ -18,9 +18,9 @@ import java.math.BigDecimal;
 public interface VendingMachineServiceLayer {
     List<VendingMachineItems> getAllItems() throws VendingMachinePersistenceException;
             
-    VendingMachineItems getItem (String itemId) throws VendingMachinePersistenceException;
+    VendingMachineItems getItem (String itemId) throws VendingMachinePersistenceException, InsufficientQuantityException;
     
-    BigDecimal getChange(VendingMachineItems currentItem) throws VendingMachinePersistenceException;
+    BigDecimal getChange(VendingMachineItems currentItem) throws VendingMachinePersistenceException, InsufficientFundsException;
     
     VendingMachineChange calculateCoins(BigDecimal change) throws VendingMachinePersistenceException;
     

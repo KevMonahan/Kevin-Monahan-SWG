@@ -75,6 +75,10 @@ import java.math.BigDecimal;
         return itemId;
     }
     
+    public void setItemId(String itemId) {
+        this.itemId = itemId;
+    }
+    
     
     
 }
