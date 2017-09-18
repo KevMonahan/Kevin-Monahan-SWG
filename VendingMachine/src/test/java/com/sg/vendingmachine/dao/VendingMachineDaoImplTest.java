@@ -47,17 +47,7 @@ public class VendingMachineDaoImplTest {
     @Test
     public void testListItem() throws Exception {
         
-        VendingMachineItems item = new VendingMachineItems("A1");
-        item.setItemName("Candy");
-        item.setItemPrice(new BigDecimal("1.50"));
-        item.setItemQuantity(5);
-        
-        VendingMachineItems item2 = new VendingMachineItems("A2");
-        item2.setItemName("Chips");
-        item2.setItemPrice(new BigDecimal("1.75"));
-        item2.setItemQuantity(10);
-        
-        assertEquals(2, dao.listItem().size());
+        assertEquals(3, dao.listItem().size());
         
         
     }
@@ -67,16 +57,11 @@ public class VendingMachineDaoImplTest {
      */
     @Test
     public void testGetItems() throws Exception {
+        VendingMachineItems fromfile = dao.getItems("A1");
+        assertEquals("Twinkie", fromfile.getItemName());
+        assertEquals(new BigDecimal("1.50"), fromfile.getItemPrice());
+        assertEquals(30, fromfile.getItemQuantity());
         
-        VendingMachineItems item = new VendingMachineItems("A1");
-        item.setItemName("Candy");
-        item.setItemPrice(new BigDecimal("1.50"));
-        item.setItemQuantity(5);
-        
-        
-        VendingMachineItems fromDao = dao.getItems("A1");
-        
-        assertEquals(item, fromDao);
     }
     
 }

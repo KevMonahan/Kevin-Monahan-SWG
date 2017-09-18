@@ -28,6 +28,10 @@ public class VendingMachineServiceImpl implements VendingMachineServiceLayer {
     int nickels = 0;
     int pennies = 0;
     BigDecimal totalStoredAmount = BigDecimal.ZERO;
+    
+    public BigDecimal getTotalStoredAmount() {
+        return totalStoredAmount;
+}
 
     public VendingMachineServiceImpl(VendingMachineDao dao) {
         this.dao = dao;

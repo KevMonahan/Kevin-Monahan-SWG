@@ -25,4 +25,8 @@ public interface VendingMachineServiceLayer {
     VendingMachineChange calculateCoins(BigDecimal change) throws VendingMachinePersistenceException;
     
     void insertedMoney(BigDecimal currentAmount);
+    
+    public BigDecimal getTotalStoredAmount();
 }
+
+

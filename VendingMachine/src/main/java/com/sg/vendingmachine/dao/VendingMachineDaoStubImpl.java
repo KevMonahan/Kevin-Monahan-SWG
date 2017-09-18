@@ -17,19 +17,20 @@ import java.util.List;
 public class VendingMachineDaoStubImpl implements VendingMachineDao {
     VendingMachineItems item;
     VendingMachineItems item2;
+    VendingMachineItems currentItem;
     List<VendingMachineItems> itemList = new ArrayList<>();
     
     public VendingMachineDaoStubImpl () {
-        item.setItemId("A1");
+        item = new VendingMachineItems("A1");
         item.setItemName("Candy");
         item.setItemPrice(new BigDecimal("1.50"));
         item.setItemQuantity(5);
-        
-        item2.setItemId("A2");
+        itemList.add(item);
+        item2 = new VendingMachineItems("A2");
         item2.setItemName("Chips");
         item2.setItemPrice(new BigDecimal("1.75"));
-        item2.setItemQuantity(10);
-        
+        item2.setItemQuantity(0);    
+        itemList.add(item2);
     }
 
     @Override
@@ -39,7 +40,9 @@ public class VendingMachineDaoStubImpl implements VendingMachineDao {
 
     @Override
     public VendingMachineItems getItems(String itemId) throws VendingMachinePersistenceException {
-        if (itemId.equals(item.getItemId())) {
+        if (itemId.equals(item2.getItemId())) {
+            return item2;
+        } else if(itemId.equals(item.getItemId())) {
             return item;
         }
         else {

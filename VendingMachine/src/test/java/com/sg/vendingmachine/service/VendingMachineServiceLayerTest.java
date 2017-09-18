@@ -8,13 +8,13 @@ package com.sg.vendingmachine.service;
 import com.sg.vendingmachine.dao.VendingMachineDao;
 import com.sg.vendingmachine.dao.VendingMachineDaoStubImpl;
 import com.sg.vendingmachine.dto.VendingMachineChange;
-import com.sg.vendingmachine.dto.VendingMachineItems;
 import java.math.BigDecimal;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.junit.Before;
 import org.junit.BeforeClass;
@@ -25,30 +25,31 @@ import org.junit.Test;
  * @author user
  */
 public class VendingMachineServiceLayerTest {
+
     private VendingMachineServiceLayer service;
-    BigDecimal totalStoredAmount = new BigDecimal("5.00");
+    BigDecimal totalStoredAmount;
     BigDecimal change;
     BigDecimal currencyLeftOver;
-    BigDecimal currentAmount = new BigDecimal("2.50");
-    
+    BigDecimal currentAmount;
+
     public VendingMachineServiceLayerTest() {
         VendingMachineDao dao = new VendingMachineDaoStubImpl();
-        
+
         service = new VendingMachineServiceImpl(dao);
     }
-    
+
     @BeforeClass
     public static void setUpClass() {
     }
-    
+
     @AfterClass
     public static void tearDownClass() {
     }
-    
+
     @Before
     public void setUp() {
     }
-    
+
     @After
     public void tearDown() {
     }
@@ -66,56 +67,52 @@ public class VendingMachineServiceLayerTest {
      */
     @Test
     public void testGetItem() throws Exception {
-        VendingMachineItems item = service.getItem("A1");
-        assertNotNull(item);
-        item = service.getItem("A20");
-        assertNull(item);
+        try {
+            service.getItem("A2");
+            fail("expected InsufficientQuantityException to be thrown.");
+        } catch (InsufficientQuantityException e) {
+
+        }
+    }
+    
+    @Test
+    public void testGetItemPasses() throws Exception {
+        try {
+            service.getItem("A1");
+        } catch (InsufficientQuantityException e) {
+            
+        }
     }
 
     /**
      * Test of getChange method, of class VendingMachineServiceLayer.
      */
-    @Test
-    public void testGetChange() throws Exception {
-        VendingMachineItems item = service.getItem("A1");
-        BigDecimal bd = item.getItemPrice();
-        if(totalStoredAmount.compareTo(bd) >= 0) {
-        change = totalStoredAmount.subtract(bd);
-        assertNull(change);
-        } else {
-            fail("Insufficient funds exception expected!");
-        }
-    }
-
+//    @Test
+//    public void testGetChange() throws Exception {
+//        VendingMachineItems currentItem = new VendingMachineItems("A1");
+//        VendingMachineInsertedMoney totalStoredAmount;
+//        service.getChange(currentItem);  
+//    }
     /**
      * Test of calculateCoins method, of class VendingMachineServiceLayer.
      */
     @Test
     public void testCalculateCoins() throws Exception {
-        int dollars = change.divideToIntegralValue(BigDecimal.ONE).intValueExact();
-        currencyLeftOver = change.remainder(BigDecimal.ONE);
-        int quarters = currencyLeftOver.divideToIntegralValue(new BigDecimal("0.25")).intValueExact();
-        currencyLeftOver = currencyLeftOver.remainder(new BigDecimal("0.25"));
-        int dimes = currencyLeftOver.divideToIntegralValue(new BigDecimal("0.10")).intValueExact();
-        currencyLeftOver = currencyLeftOver.remainder(new BigDecimal("0.10"));
-        int nickels = currencyLeftOver.divideToIntegralValue(new BigDecimal("0.05")).intValueExact();
-        currencyLeftOver = currencyLeftOver.remainder(new BigDecimal("0.05"));
-        int pennies = currencyLeftOver.divideToIntegralValue(new BigDecimal("0.01")).intValueExact();
-        currencyLeftOver = currencyLeftOver.remainder(new BigDecimal("0.01"));
-        
-        VendingMachineChange coinsReturned = new VendingMachineChange(dollars, quarters, dimes, nickels, pennies);
-        assertNull(coinsReturned);
+        VendingMachineChange coinsReturned = service.calculateCoins(new BigDecimal("1.94"));
+        assertTrue(coinsReturned.getDollars() == 1 && coinsReturned.getQuarters() == 3
+                && coinsReturned.getDimes() == 1 && coinsReturned.getNickels() == 1
+                && coinsReturned.getPennies() == 4);
     }
 
     /**
      * Test of insertedMoney method, of class VendingMachineServiceLayer.
-     * @param currentAmount
+     *
      */
     @Test
     public void testInsertedMoney() {
-        this.totalStoredAmount = totalStoredAmount.add(currentAmount);
-        assertTrue(totalStoredAmount);
-        
+        currentAmount = new BigDecimal("1.00");
+        service.insertedMoney(currentAmount);
+        assertEquals(new BigDecimal("1.00"), service.getTotalStoredAmount());     
     }
 
 }
