@@ -12,8 +12,6 @@ import java.math.BigDecimal;
 import org.junit.After;
 import org.junit.AfterClass;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import org.junit.Before;
@@ -74,25 +72,37 @@ public class VendingMachineServiceLayerTest {
 
         }
     }
-    
+
     @Test
     public void testGetItemPasses() throws Exception {
         try {
             service.getItem("A1");
         } catch (InsufficientQuantityException e) {
-            
+
         }
     }
 
     /**
      * Test of getChange method, of class VendingMachineServiceLayer.
      */
-//    @Test
-//    public void testGetChange() throws Exception {
-//        VendingMachineItems currentItem = new VendingMachineItems("A1");
-//        VendingMachineInsertedMoney totalStoredAmount;
-//        service.getChange(currentItem);  
-//    }
+    @Test
+    public void testGetChange() throws Exception {
+        service.insertedMoney(new BigDecimal("2.00"));
+        change = service.getChange(service.getItem("A1"));
+        assertEquals(new BigDecimal("0.50"), change);
+    }
+
+    @Test
+    public void testGetChangeUnhappyPath() throws Exception {
+        try {
+            service.insertedMoney(new BigDecimal("1.00"));
+            change = service.getChange(service.getItem("A1"));
+            fail("expected insufficient funds exception");
+        } catch (InsufficientFundsException e) {
+
+        }
+    }
+
     /**
      * Test of calculateCoins method, of class VendingMachineServiceLayer.
      */
@@ -112,7 +122,7 @@ public class VendingMachineServiceLayerTest {
     public void testInsertedMoney() {
         currentAmount = new BigDecimal("1.00");
         service.insertedMoney(currentAmount);
-        assertEquals(new BigDecimal("1.00"), service.getTotalStoredAmount());     
+        assertEquals(new BigDecimal("1.00"), service.getTotalStoredAmount());
     }
 
 }
