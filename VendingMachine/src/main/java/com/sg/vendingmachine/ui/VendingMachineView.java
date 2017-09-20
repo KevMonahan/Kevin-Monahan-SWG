@@ -74,7 +74,7 @@ public class VendingMachineView {
                 + coinsReturned.getDollars() + " Quarters: " 
                 + coinsReturned.getQuarters() + " Dimes: " 
                 + coinsReturned.getDimes() + " Nickels: "  
-                +coinsReturned.getNickels() + " Pennis: " 
+                + coinsReturned.getNickels() + " Pennies: " 
                 + coinsReturned.getPennies());
     }
 }

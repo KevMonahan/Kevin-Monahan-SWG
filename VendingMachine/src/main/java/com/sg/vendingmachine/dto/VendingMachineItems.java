@@ -78,7 +78,10 @@ import java.math.BigDecimal;
     public void setItemId(String itemId) {
         this.itemId = itemId;
     }
-    
+    @Override
+    public String toString(){
+        return "Item ID: " + itemId + " |Item Name: " + itemName + " |Item Price: " + itemPrice + " |Item Quantity: " + itemQuantity + " ";
+    }
     
     
 }

@@ -1,0 +1,4 @@
+2017-09-20T09:36:23.623 ; getChange: Item ID: A1 |Item Name: Twinkie |Item Price: 1.50 |Item Quantity: 29
+2017-09-20T09:36:33.452 ; getChange: Item ID: A1 |Item Name: Twinkie |Item Price: 1.50 |Item Quantity: 29
+2017-09-20T09:51:42.664 ; getChange: Item ID: A1 |Item Name: Twinkie |Item Price: 1.50 |Item Quantity: 29com.sg.vendingmachine.service.InsufficientFundsException: Error: Insufficient Funds. Please Insert More Money
+2017-09-20T09:55:18.882 ; getItem: A2com.sg.vendingmachine.service.InsufficientQuantityException: Error: Your Item Selection Is Out Of Stock! Please Make Another Selection!

@@ -5,6 +5,7 @@
  */
 package com.sg.vendingmachine.service;
 
+import com.sg.vendingmachine.dao.VendingMachineAuditDao;
 import com.sg.vendingmachine.dao.VendingMachineDao;
 import com.sg.vendingmachine.dao.VendingMachinePersistenceException;
 import com.sg.vendingmachine.dto.VendingMachineChange;
@@ -19,6 +20,7 @@ import java.util.List;
 public class VendingMachineServiceImpl implements VendingMachineServiceLayer {
 
     VendingMachineDao dao;
+    VendingMachineAuditDao auditDao;
     VendingMachineItems currentItem;
     BigDecimal change = new BigDecimal("0");
     BigDecimal currencyLeftOver = new BigDecimal("0");
@@ -29,6 +31,12 @@ public class VendingMachineServiceImpl implements VendingMachineServiceLayer {
     int pennies = 0;
     BigDecimal totalStoredAmount = BigDecimal.ZERO;
     
+    public VendingMachineServiceImpl(VendingMachineDao dao, VendingMachineAuditDao auditDao) {
+        this.dao = dao;
+        this.auditDao = auditDao;
+    }
+    
+    @Override
     public BigDecimal getTotalStoredAmount() {
         return totalStoredAmount;
 }
@@ -59,6 +67,7 @@ public class VendingMachineServiceImpl implements VendingMachineServiceLayer {
         BigDecimal bd = currentItem.getItemPrice();
         if(totalStoredAmount.compareTo(bd) >= 0) {
         change = totalStoredAmount.subtract(bd);
+        totalStoredAmount = totalStoredAmount.subtract(bd);
         return change;
         } else {
             throw new InsufficientFundsException ("Error: Insufficient Funds. Please Insert More Money");

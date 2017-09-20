@@ -95,5 +95,8 @@ public class VendingMachineChange {
     public void setPennies(int pennies) {
         this.pennies = pennies;
     }
-    
+    @Override
+    public String toString(){
+        return "Dollars: " + dollars + " |Quarters: " + quarters + " |Dimes: " + dimes + " |Nickels: " + nickels + " |Pennies: " + pennies + " ";
+    }
 }
