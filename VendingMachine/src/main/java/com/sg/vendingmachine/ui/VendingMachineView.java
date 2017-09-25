@@ -8,7 +8,6 @@ package com.sg.vendingmachine.ui;
 import com.sg.vendingmachine.dto.VendingMachineChange;
 import com.sg.vendingmachine.dto.VendingMachineItems;
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
 import java.util.List;
 import java.util.Scanner;
 
@@ -19,7 +18,7 @@ import java.util.Scanner;
 public class VendingMachineView {
 
     Scanner sc = new Scanner(System.in);
-    DecimalFormat format = new DecimalFormat();
+
     UserIO io;
 
     public int printMenuAndGetSelection() {
@@ -29,7 +28,7 @@ public class VendingMachineView {
         io.print("3. Make Item Selection");
         io.print("4. Exit");
 
-        return io.readInt("Please select from the above choices.", 1, 5);
+        return io.readInt("Please select from the above choices.", 1, 4);
     }
 
     public BigDecimal getVendingMachineInsertedAmount() {
@@ -40,10 +39,6 @@ public class VendingMachineView {
 
     public void displayDisplayItemSelectionBanner() {
         io.print("=== Vending Machine Item List ===");
-    }
-
-    public void displayDisplayAllBanner() {
-
     }
 
     public void displayItemList(List<VendingMachineItems> itemList) {

@@ -80,7 +80,7 @@ public class VendingMachineController {
     }
 
     private void listVendingMachineItems() throws VendingMachinePersistenceException {
-        view.displayDisplayAllBanner();
+        view.displayDisplayItemSelectionBanner();
         List<VendingMachineItems> itemList = service.getAllItems();
         view.displayItemList(itemList);
     }
