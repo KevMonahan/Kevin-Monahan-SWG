@@ -27,6 +27,8 @@ public interface VendingMachineServiceLayer {
     void insertedMoney(BigDecimal currentAmount);
     
     public BigDecimal getTotalStoredAmount();
+    
+    public void resetTotalStoredAmount();
 }
 
 

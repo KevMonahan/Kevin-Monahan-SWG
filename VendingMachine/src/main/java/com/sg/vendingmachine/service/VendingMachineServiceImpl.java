@@ -97,5 +97,10 @@ public class VendingMachineServiceImpl implements VendingMachineServiceLayer {
     public void insertedMoney(BigDecimal currentAmount) {
         this.totalStoredAmount = totalStoredAmount.add(currentAmount);
     }
+    
+    @Override
+    public void resetTotalStoredAmount() {
+        this.totalStoredAmount = BigDecimal.ZERO;
+    }
 
 }

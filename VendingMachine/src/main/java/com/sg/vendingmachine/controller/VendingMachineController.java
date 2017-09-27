@@ -92,6 +92,7 @@ public class VendingMachineController {
         VendingMachineChange coinsReturned = service.calculateCoins(change);
         view.displayItem(item);
         view.displayChange(coinsReturned);
+        service.resetTotalStoredAmount();
     }
 
     private void unknownCommand() {
