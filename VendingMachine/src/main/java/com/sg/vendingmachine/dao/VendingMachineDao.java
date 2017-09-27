@@ -19,4 +19,5 @@ public interface VendingMachineDao {
     
     public VendingMachineItems getItems(String itemId) throws VendingMachinePersistenceException;
     
+    public void updateItems(String itemId) throws VendingMachinePersistenceException;
 }

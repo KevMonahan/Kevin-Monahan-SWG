@@ -42,6 +42,15 @@ public class VendingMachineDaoImpl implements VendingMachineDao {
         loadVendingMachine();
         return items.get(itemId);
     }
+    @Override
+    public void updateItems(String itemId) throws VendingMachinePersistenceException {
+        VendingMachineItems currentItem = getItems(itemId);
+
+        if (currentItem.getItemQuantity() > 0) {
+            currentItem.setItemQuantity(currentItem.getItemQuantity() - 1);
+            writeVendingMachine();
+        }
+    }
 
     private void loadVendingMachine() throws VendingMachinePersistenceException {
         Scanner scanner;
@@ -77,20 +86,7 @@ public class VendingMachineDaoImpl implements VendingMachineDao {
 
         scanner.close();
     }
-
-    /**
-     * Writes all students in the roster out to a ROSTER_FILE. See loadRoster
-     * for file format.
-     *
-     * @throws ClassRosterPersistenceException if an error occurs writing to the
-     * file
-     */
     private void writeVendingMachine() throws VendingMachinePersistenceException {
-        // NOTE FOR APPRENTICES: We are not handling the IOException - but
-        // we are translating it to an application specific exception and 
-        // then simple throwing it (i.e. 'reporting' it) to the code that
-        // called us.  It is the responsibility of the calling code to 
-        // handle any errors that occur.
         PrintWriter out;
 
         try {
@@ -99,23 +95,14 @@ public class VendingMachineDaoImpl implements VendingMachineDao {
             throw new VendingMachinePersistenceException(
                     "Could not save student data.", e);
         }
-
-        // Write out the Student objects to the roster file.
-        // NOTE TO THE APPRENTICES: We could just grab the student map,
-        // get the Collection of Students and iterate over them but we've
-        // already created a method that gets a List of Students so
-        // we'll reuse it.
         List<VendingMachineItems> itemList = this.listItem();
         for (VendingMachineItems currentItem : itemList) {
-            // write the Student object to the file
             out.println(currentItem.getItemId() + DELIMITER
                     + currentItem.getItemName() + DELIMITER
                     + currentItem.getItemPrice() + DELIMITER
                     + currentItem.getItemQuantity());
-            // force PrintWriter to write line to the file
             out.flush();
         }
-        // Clean up
         out.close();
     }
 

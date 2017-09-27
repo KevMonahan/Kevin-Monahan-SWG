@@ -49,5 +49,13 @@ public class VendingMachineDaoStubImpl implements VendingMachineDao {
             return null;
         }
     }
+
+    @Override
+    public void updateItems(String itemId) throws VendingMachinePersistenceException {
+        currentItem = getItems(itemId);
+        if (currentItem.getItemQuantity() > 0) {
+            currentItem.setItemQuantity(currentItem.getItemQuantity() - 1);
+        }
+    }
     
 }
