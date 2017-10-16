@@ -6,11 +6,12 @@
 package com.sg.flooringmastery.controller;
 
 import com.sg.flooringmastery.dao.FlooringPersistenceException;
-import com.sg.flooringmastery.dto.Orders;
+import com.sg.flooringmastery.dto.PartialOrder;
 import com.sg.flooringmastery.service.DuplicateOrderNumberException;
 import com.sg.flooringmastery.service.OrderValidationException;
 import com.sg.flooringmastery.service.ServiceLayer;
 import com.sg.flooringmastery.ui.View;
+import java.time.LocalDate;
 
 /**
  *
@@ -20,6 +21,11 @@ public class Controller {
 
     View view;
     ServiceLayer service;
+
+    public Controller(View view, ServiceLayer service) {
+        this.view = view;
+        this.service = service;
+    }
 
     public void run() {
         boolean keepGoing = true;
@@ -64,7 +70,10 @@ public class Controller {
     }
 
     private void displayOrders() throws FlooringPersistenceException{
-        view.getOrderDate();
+        
+        view.displayDisplayAllOrders();
+        view.displayOrders(service.displayOrders(view.getOrderDate()));
+        
 
     }
 
@@ -86,6 +95,7 @@ public class Controller {
 
     private void editAnOrder() throws FlooringPersistenceException{
         view.getOrderDate();
+        view.getOrderNumber();
     }
 
     private void removeAnOrder() throws FlooringPersistenceException{

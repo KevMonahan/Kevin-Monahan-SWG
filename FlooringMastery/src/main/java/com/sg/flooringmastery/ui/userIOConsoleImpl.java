@@ -7,6 +7,7 @@ package com.sg.flooringmastery.ui;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
 
 /**
@@ -129,7 +130,9 @@ public class userIOConsoleImpl implements userIO {
     public LocalDate readLocalDate(String prompt) {
         print(prompt);
         String input = sc.nextLine();
-        LocalDate date = LocalDate.parse(prompt);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMddyyyy");
+        LocalDate date = LocalDate.parse(input, formatter);
+        
         return date;
     }
 

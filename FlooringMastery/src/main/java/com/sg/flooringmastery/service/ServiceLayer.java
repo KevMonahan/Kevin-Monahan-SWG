@@ -7,12 +7,16 @@ package com.sg.flooringmastery.service;
 
 import com.sg.flooringmastery.dao.FlooringPersistenceException;
 import com.sg.flooringmastery.dto.Orders;
+import com.sg.flooringmastery.dto.PartialOrder;
+import java.time.LocalDate;
+import java.util.List;
 
 /**
  *
  * @author user
  */
 public interface ServiceLayer {
-    void createOrder(Orders order) throws DuplicateOrderNumberException, FlooringPersistenceException, OrderValidationException;
+    void createOrder(PartialOrder currentOrder) throws DuplicateOrderNumberException, FlooringPersistenceException, OrderValidationException;
     
+    List<Orders> displayOrders(LocalDate date) throws FlooringPersistenceException;
 }

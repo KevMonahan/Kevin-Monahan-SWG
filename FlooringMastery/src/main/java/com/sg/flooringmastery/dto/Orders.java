@@ -25,9 +25,16 @@ public class Orders {
     private BigDecimal laborCost;
     private BigDecimal tax;
     private BigDecimal total;
-    
+
     public Orders(Integer orderNumber) {
         this.orderNumber = orderNumber;
+    }
+
+    public Orders(PartialOrder partialOrder) {
+        this.area = partialOrder.getArea();
+        this.customerName = partialOrder.getCustomerName();
+        this.orderState = partialOrder.getOrderState();
+        this.productType = partialOrder.getProductType();
     }
 
     /**
@@ -197,5 +204,5 @@ public class Orders {
     public void setTotal(BigDecimal total) {
         this.total = total;
     }
-    
+
 }
