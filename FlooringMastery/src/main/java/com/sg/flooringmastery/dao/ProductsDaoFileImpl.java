@@ -52,7 +52,7 @@ public class ProductsDaoFileImpl implements ProductsDao {
 
         scanner.close();
     }
-    private Products getProduct(String productType) throws FlooringPersistenceException {
+    public Products getProduct(String productType) throws FlooringPersistenceException {
         loadProducts();
         return products.get(productType);
     }

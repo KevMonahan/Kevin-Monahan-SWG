@@ -1,9 +1,9 @@
 -------------------------------------------------------------------------------
 Test set: com.sg.vendingmachine.dao.VendingMachineDaoImplTest
 -------------------------------------------------------------------------------
-Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.145 sec <<< FAILURE!
-testGetItems(com.sg.vendingmachine.dao.VendingMachineDaoImplTest)  Time elapsed: 0.054 sec  <<< FAILURE!
-java.lang.AssertionError: expected:<30> but was:<22>
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.135 sec <<< FAILURE!
+testGetItems(com.sg.vendingmachine.dao.VendingMachineDaoImplTest)  Time elapsed: 0.034 sec  <<< FAILURE!
+java.lang.AssertionError: expected:<30> but was:<28>
 	at org.junit.Assert.fail(Assert.java:88)
 	at org.junit.Assert.failNotEquals(Assert.java:834)
 	at org.junit.Assert.assertEquals(Assert.java:645)

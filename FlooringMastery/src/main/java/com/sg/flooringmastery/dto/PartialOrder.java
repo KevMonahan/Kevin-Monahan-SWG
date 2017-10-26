@@ -12,11 +12,21 @@ import java.math.BigDecimal;
  * @author user
  */
 public class PartialOrder {
+
     private String customerName;
     private String orderState;
     private String productType;
     private BigDecimal area;
-    
+    private Integer orderNumber;
+
+    public PartialOrder(String customerName, String orderState, String productType, BigDecimal area, Integer orderNumber) {
+        this.customerName = customerName;
+        this.orderState = orderState;
+        this.productType = productType;
+        this.area = area;
+        this.orderNumber = orderNumber;
+    }
+
     public PartialOrder(String customerName, String orderState, String productType, BigDecimal area) {
         this.customerName = customerName;
         this.orderState = orderState;
@@ -78,5 +88,19 @@ public class PartialOrder {
      */
     public void setArea(BigDecimal area) {
         this.area = area;
+    }
+
+    /**
+     * @return the orderNumber
+     */
+    public Integer getOrderNumber() {
+        return orderNumber;
+    }
+
+    /**
+     * @param orderNumber the orderNumber to set
+     */
+    public void setOrderNumber(Integer orderNumber) {
+        this.orderNumber = orderNumber;
     }
 }

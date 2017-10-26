@@ -16,7 +16,19 @@ import java.util.List;
  * @author user
  */
 public interface ServiceLayer {
-    void createOrder(PartialOrder currentOrder) throws DuplicateOrderNumberException, FlooringPersistenceException, OrderValidationException;
+    Orders createOrder(PartialOrder currentOrder) throws FlooringPersistenceException, OrderValidationException;
+    
+    Orders calculateOrder(Orders newOrder) throws FlooringPersistenceException, OrderValidationException;
+    
+    void saveOrderToMemory(Orders newOrder) throws FlooringPersistenceException, OrderValidationException;
     
     List<Orders> displayOrders(LocalDate date) throws FlooringPersistenceException;
+    
+    Orders removeOrder(LocalDate date, Integer orderNum) throws FlooringPersistenceException;
+    
+    Orders editSingleOrder(LocalDate date, Integer orderNum) throws FlooringPersistenceException, OrderValidationException;
+
+    public void saveWork() throws FlooringPersistenceException;
+
+    public Boolean getMode() throws FlooringPersistenceException;
 }

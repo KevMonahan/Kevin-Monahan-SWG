@@ -6,8 +6,8 @@
 package com.sg.flooringmastery.controller;
 
 import com.sg.flooringmastery.dao.FlooringPersistenceException;
+import com.sg.flooringmastery.dto.Orders;
 import com.sg.flooringmastery.dto.PartialOrder;
-import com.sg.flooringmastery.service.DuplicateOrderNumberException;
 import com.sg.flooringmastery.service.OrderValidationException;
 import com.sg.flooringmastery.service.ServiceLayer;
 import com.sg.flooringmastery.ui.View;
@@ -40,11 +40,19 @@ public class Controller {
                         displayOrders();
                         break;
                     case 2:
-                        addAnOrder();
-                        break;
+                        try {
+                            addAnOrder();
+                            break;
+                        } catch (OrderValidationException e) {
+                            view.displayErrorMessage(e.getMessage());
+                        }
                     case 3:
+                        try {
                         editAnOrder();
                         break;
+                        } catch (OrderValidationException e) {
+                            view.displayErrorMessage(e.getMessage());
+                        }
                     case 4:
                         removeAnOrder();
                         break;
@@ -69,42 +77,66 @@ public class Controller {
         return view.printMenuAndGetSelection();
     }
 
-    private void displayOrders() throws FlooringPersistenceException{
-        
+    private void displayOrders() throws FlooringPersistenceException {
+
         view.displayDisplayAllOrders();
         view.displayOrders(service.displayOrders(view.getOrderDate()));
-        
 
     }
 
-    private void addAnOrder() throws FlooringPersistenceException{
+    private void addAnOrder() throws FlooringPersistenceException, OrderValidationException {
         view.displayCreateOrderBanner();
         boolean hasErrors = false;
         do {
             PartialOrder currentOrder = view.getNewOrderInfo();
-            try {
-                service.createOrder(currentOrder);
-                view.displayOrderSuccessBanner();
-                hasErrors = false;
-            } catch (DuplicateOrderNumberException | OrderValidationException e) {
+            Orders newOrder = service.calculateOrder(service.createOrder(currentOrder));
+            Boolean correctOrder = view.confirmOrder(newOrder);
+            if (correctOrder == false) {
                 hasErrors = true;
-                view.displayErrorMessage(e.getMessage());
+            } else if (correctOrder == true) {
+                view.displayOrderSuccessBanner();
+                service.saveOrderToMemory(newOrder);
             }
+            hasErrors = false;
+
         } while (hasErrors);
     }
 
-    private void editAnOrder() throws FlooringPersistenceException{
-        view.getOrderDate();
-        view.getOrderNumber();
+    private void editAnOrder() throws FlooringPersistenceException, OrderValidationException {
+        view.displayEditOrderBanner();
+        LocalDate date = view.getOrderDate();
+        Integer orderNumber = view.getOrderNumber();
+        
+        
+        Orders order = service.editSingleOrder(date, orderNumber);
+        PartialOrder editedPartialOrder = view.editOrder(order);
+        Orders editedOrder = service.createOrder(editedPartialOrder);
+        service.removeOrder(date, orderNumber);
+        Orders finalEditedOrder = service.calculateOrder(editedOrder);
+        service.saveOrderToMemory(finalEditedOrder);
+        
     }
 
-    private void removeAnOrder() throws FlooringPersistenceException{
-        view.getOrderDate();
-        view.getOrderNumber();
+    private void removeAnOrder() throws FlooringPersistenceException {
+        view.displayRemoveOrderBanner();
+        LocalDate date = view.getOrderDate();
+        Integer orderNumber = view.getOrderNumber();
+        service.removeOrder(date, orderNumber);
+        view.displayRemoveSuccessBanner();
     }
 
-    private void saveCurrentWork() throws FlooringPersistenceException{
-
+    private void saveCurrentWork() throws FlooringPersistenceException {
+        Boolean willSave = view.displaySaveConfirmation();
+        Boolean productionMode = service.getMode();
+        
+        if (willSave == true && productionMode == true) {
+            service.saveWork();
+            view.displaySavedBanner();
+        } else if (willSave == true && productionMode == false){
+            view.displayTestModeBanner();
+        } else if (willSave == false) {
+            view.displaySaveAbortedBanner();
+        }
     }
 
     private void exitMessage() {

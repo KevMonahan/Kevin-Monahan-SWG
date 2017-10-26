@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.Set;
 
 /**
  *
@@ -26,9 +27,10 @@ import java.util.Scanner;
  */
 public class OrdersDaoFileImpl implements OrdersDao {
 
+    LocalDate date;
     public static final String ORDERNUMBER_FILE = "LatestOrderNumber.txt";
-    public static final String ORDER_FILE = "orders.txt";
     public static final String DELIMITER = ",";
+    public static final String MODE_FILE = "Mode.txt";
 
     private Map<LocalDate, List<Orders>> orders = new HashMap<>();
 
@@ -36,13 +38,11 @@ public class OrdersDaoFileImpl implements OrdersDao {
     public Orders addOrder(LocalDate date, Orders order) throws FlooringPersistenceException {
         if (orders.containsKey(date)) {
             List<Orders> OrderList = orders.get(date);
-            order.setOrderNumber(loadOrderNumber());
 
             OrderList.add(order);
         } else {
             List<Orders> orderList = new ArrayList();
             orders.put(date, orderList);
-            order.setOrderNumber(loadOrderNumber());
 
             orderList.add(order);
         }
@@ -50,24 +50,41 @@ public class OrdersDaoFileImpl implements OrdersDao {
 
         return order;
     }
+
     @Override
     public List<Orders> getOrdersByDate(LocalDate date) throws FlooringPersistenceException {
-        loadLibrary(date);
+        if (orders.get(date) == null) {
+            loadLibrary(date);
+        }
         if (!orders.containsKey(date)) {
-            throw new FlooringPersistenceException ("Date does not exist");
+            throw new FlooringPersistenceException("Date does not exist");
         }
         return orders.get(date);
-        
+
     }
 
     @Override
-    public Orders editOrder(LocalDate date, Orders orderNumber) throws FlooringPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Orders getOrder(LocalDate date, Integer orderNumber) throws FlooringPersistenceException {
+        List<Orders> orderList = orders.get(date);
+        for (Orders i : orderList) {
+            if (i.getOrderNumber() == orderNumber) {
+                orderList.contains(i);
+                return i;
+            }
+        }
+        throw new FlooringPersistenceException("Error: Could not find Order.");
     }
 
     @Override
-    public Orders removeOrder(LocalDate date, Orders orderNumber) throws FlooringPersistenceException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public Orders removeOrder(LocalDate date, Integer orderNumber) throws FlooringPersistenceException {
+        List<Orders> orderList = orders.get(date);
+        for (Orders i : orderList) {
+            if (i.getOrderNumber() == orderNumber) {
+                orderList.remove(i);
+                return i;
+            }
+        }
+        throw new FlooringPersistenceException("Order could not be deleted successfully.");
     }
 
     private void loadLibrary(LocalDate ld) throws FlooringPersistenceException {
@@ -115,17 +132,17 @@ public class OrdersDaoFileImpl implements OrdersDao {
 
         scanner.close();
     }
+
     @Override
     public Integer loadOrderNumber() throws FlooringPersistenceException {
-
-            Scanner scanner;
-            try {
-                scanner = new Scanner(
-                        new BufferedReader(
-                                new FileReader(ORDERNUMBER_FILE)));
-            } catch (FileNotFoundException e) {
-                throw new FlooringPersistenceException(" -_- Could not load the order number into memory.", e);
-            }
+        Scanner scanner;
+        try {
+            scanner = new Scanner(
+                    new BufferedReader(
+                            new FileReader(ORDERNUMBER_FILE)));
+        } catch (FileNotFoundException e) {
+            throw new FlooringPersistenceException(" -_- Could not load the order number into memory.", e);
+        }
 
         String currentLine = scanner.nextLine();
         Integer orderNumber = Integer.parseInt(currentLine);
@@ -146,4 +163,63 @@ public class OrdersDaoFileImpl implements OrdersDao {
         return orderNumber;
     }
 
+    @Override
+    public void saveWork() throws FlooringPersistenceException {
+        PrintWriter out;
+
+        Set<LocalDate> keySet = orders.keySet();
+        for (LocalDate date : keySet) {
+
+            try {
+                out = new PrintWriter(new FileWriter("Orders_" + date + ".txt"));
+            } catch (IOException e) {
+                throw new FlooringPersistenceException("Could not save Order Data.", e);
+            }
+
+            List<Orders> orderList = orders.get(date);
+            for (Orders currentOrder : orderList) {
+
+                out.println(currentOrder.getOrderNumber() + DELIMITER
+                        + currentOrder.getCustomerName() + DELIMITER
+                        + currentOrder.getOrderState() + DELIMITER
+                        + currentOrder.getTaxRate() + DELIMITER
+                        + currentOrder.getProductType() + DELIMITER
+                        + currentOrder.getArea() + DELIMITER
+                        + currentOrder.getCostPerSqFt() + DELIMITER
+                        + currentOrder.getLaborCostPerSqFt() + DELIMITER
+                        + currentOrder.getMaterialCost() + DELIMITER
+                        + currentOrder.getLaborCost() + DELIMITER
+                        + currentOrder.getTax() + DELIMITER
+                        + currentOrder.getTotal());
+
+                out.flush();
+            }
+        
+            out.close();
+        }
+    }
+
+    @Override
+    public Boolean getMode() throws FlooringPersistenceException {
+        Scanner scanner;
+        Boolean productionMode = false;
+        try {
+            scanner = new Scanner(
+                    new BufferedReader(
+                            new FileReader(MODE_FILE)));
+        } catch (FileNotFoundException e) {
+            throw new FlooringPersistenceException(" -_- Could not load the order number into memory.", e);
+        }
+
+        String currentLine;
+
+        currentLine = scanner.nextLine();
+
+        if (currentLine.equals("Production")) {
+            productionMode = true;
+        } else {
+            productionMode = false;
+        }
+        return productionMode;
+    }
 }

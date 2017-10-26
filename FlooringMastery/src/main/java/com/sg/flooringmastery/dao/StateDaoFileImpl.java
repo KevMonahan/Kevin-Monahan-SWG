@@ -23,7 +23,7 @@ public class StateDaoFileImpl implements StateDao {
     public static final String STATE_FILE = "Taxes.txt";
     public static final String DELIMITER = ",";
 
-    private Map<String, BigDecimal> states = new HashMap<>();
+    private Map<String, State> states = new HashMap<>();
 
     private void readStateAndTax() throws FlooringPersistenceException {
         Scanner scanner;
@@ -48,13 +48,13 @@ public class StateDaoFileImpl implements StateDao {
             State currentState = new State(currentTokens[0]);
             currentState.setStateTax(new BigDecimal(currentTokens[1]));
 
-            states.put(currentState.getState(), currentState.getStateTax());
+            states.put(currentState.getState(), currentState);
         }
 
         scanner.close();
     }
 
-    private BigDecimal getStateTax(State state) throws FlooringPersistenceException {
+    public State getStateTax(String state) throws FlooringPersistenceException {
         readStateAndTax();
         return states.get(state);
     }

@@ -6,6 +6,7 @@
 package com.sg.flooringmastery.dto;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 
 /**
  *
@@ -25,6 +26,7 @@ public class Orders {
     private BigDecimal laborCost;
     private BigDecimal tax;
     private BigDecimal total;
+    private LocalDate date;
 
     public Orders(Integer orderNumber) {
         this.orderNumber = orderNumber;
@@ -203,6 +205,20 @@ public class Orders {
      */
     public void setTotal(BigDecimal total) {
         this.total = total;
+    }
+
+    /**
+     * @return the date
+     */
+    public LocalDate getDate() {
+        return date;
+    }
+
+    /**
+     * @param date the date to set
+     */
+    public void setDate(LocalDate date) {
+        this.date = date;
     }
 
 }

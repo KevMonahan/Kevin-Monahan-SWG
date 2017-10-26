@@ -38,7 +38,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
     public List<DVD> getAllDVD()
             throws DVDLibraryDaoException {
         loadLibrary();
-        
+
         return new ArrayList<DVD>(dvds.values());
     }
 
@@ -48,14 +48,14 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
         loadLibrary();
         return dvds.get(dvdId);
     }
-    
-        @Override
+
+    @Override
     public DVD editDVD(String dvdId, DVD title) throws DVDLibraryDaoException {
         loadLibrary();
-        
+
         DVD editedDVD = dvds.put(dvdId, title);
         writeLibrary();
-        
+
         return editedDVD;
     }
 
@@ -68,7 +68,7 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
         writeLibrary();
         return removedDVD;
     }
-    
+
     private void loadLibrary() throws DVDLibraryDaoException {
         Scanner scanner;
 
@@ -131,12 +131,6 @@ public class DVDLibraryDaoFileImpl implements DVDLibraryDao {
 
             out.flush();
         }
-
         out.close();
     }
-
-
-
-    
-
 }

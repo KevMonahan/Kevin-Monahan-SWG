@@ -6,14 +6,13 @@
 package com.sg.flooringmastery.dao;
 
 import com.sg.flooringmastery.dto.Products;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.math.BigDecimal;
 
 /**
  *
  * @author user
  */
 public interface ProductsDao {
-        
+
+    public Products getProduct(String productType) throws FlooringPersistenceException;
 }

@@ -5,10 +5,12 @@
  */
 package com.sg.flooringmastery.dao;
 
+import com.sg.flooringmastery.dto.State;
+
 /**
  *
  * @author user
  */
 public interface StateDao {
-    
+    public State getStateTax(String state) throws FlooringPersistenceException;
 }
