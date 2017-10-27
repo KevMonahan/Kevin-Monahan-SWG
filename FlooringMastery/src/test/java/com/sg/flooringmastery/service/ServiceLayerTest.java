@@ -57,7 +57,7 @@ public class ServiceLayerTest {
         Orders newOrder = service.createOrder(order1);
         
         assertEquals(new BigDecimal("6.25"),newOrder.getTaxRate());
-        assertEquals(LocalDate.now(),LocalDate.now());
+        assertEquals(LocalDate.now(), newOrder.getDate());
         assertEquals(new BigDecimal("2.25"), newOrder.getCostPerSqFt());
         assertEquals(new BigDecimal("2.10"), newOrder.getLaborCostPerSqFt());
     }

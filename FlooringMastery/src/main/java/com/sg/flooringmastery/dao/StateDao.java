@@ -6,6 +6,7 @@
 package com.sg.flooringmastery.dao;
 
 import com.sg.flooringmastery.dto.State;
+import java.util.List;
 
 /**
  *
@@ -13,4 +14,5 @@ import com.sg.flooringmastery.dto.State;
  */
 public interface StateDao {
     public State getStateTax(String state) throws FlooringPersistenceException;
+    public List<State> getStateList() throws FlooringPersistenceException;
 }

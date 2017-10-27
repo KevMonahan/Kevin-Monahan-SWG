@@ -88,7 +88,7 @@ public class Controller {
         view.displayCreateOrderBanner();
         boolean hasErrors = false;
         do {
-            PartialOrder currentOrder = view.getNewOrderInfo();
+            PartialOrder currentOrder = view.getNewOrderInfo(service.getStateList(), service.getProductList());
             Orders newOrder = service.calculateOrder(service.createOrder(currentOrder));
             Boolean correctOrder = view.confirmOrder(newOrder);
             if (correctOrder == false) {

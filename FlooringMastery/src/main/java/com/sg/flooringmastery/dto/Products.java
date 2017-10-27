@@ -62,4 +62,9 @@ public class Products {
     public void setLaborCostPerSqFt(BigDecimal laborCostPerSqFt) {
         this.laborCostPerSqFt = laborCostPerSqFt;
     }
+    
+    @Override
+    public String toString() {
+        return this.getProductType();
+    }
 }

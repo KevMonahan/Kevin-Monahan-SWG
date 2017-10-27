@@ -7,6 +7,7 @@ package com.sg.flooringmastery.dao;
 
 import com.sg.flooringmastery.dto.Products;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  *
@@ -15,4 +16,5 @@ import java.math.BigDecimal;
 public interface ProductsDao {
 
     public Products getProduct(String productType) throws FlooringPersistenceException;
+    public List<Products> getProductList() throws FlooringPersistenceException;
 }

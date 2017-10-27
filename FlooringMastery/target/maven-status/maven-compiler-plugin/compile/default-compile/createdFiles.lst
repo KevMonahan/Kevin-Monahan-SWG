@@ -16,6 +16,7 @@ com\sg\flooringmastery\dao\ProductsDao.class
 com\sg\flooringmastery\dto\Orders.class
 com\sg\flooringmastery\service\ServiceLayerImpl.class
 com\sg\flooringmastery\dao\OrdersDaoFileImpl.class
+com\sg\flooringmastery\dao\OrdersDaoStubImpl.class
 com\sg\flooringmastery\advice\LoggingAdvice.class
 com\sg\flooringmastery\service\ServiceLayer.class
 com\sg\flooringmastery\service\DuplicateOrderNumberException.class

@@ -107,4 +107,14 @@ public class ServiceLayerImpl implements ServiceLayer {
         Boolean productionMode = orderDao.getMode();
         return productionMode;
     }
+    
+    public List<Products> getProductList() throws FlooringPersistenceException {
+        List<Products> productList = productDao.getProductList();
+        return productList;
+    }
+    
+    public List<State> getStateList() throws FlooringPersistenceException {
+        List<State> stateList = stateDao.getStateList();
+        return stateList;
+    }
 }

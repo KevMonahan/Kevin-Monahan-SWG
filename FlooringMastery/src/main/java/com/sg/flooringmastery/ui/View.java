@@ -7,6 +7,8 @@ package com.sg.flooringmastery.ui;
 
 import com.sg.flooringmastery.dto.Orders;
 import com.sg.flooringmastery.dto.PartialOrder;
+import com.sg.flooringmastery.dto.Products;
+import com.sg.flooringmastery.dto.State;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.time.LocalDate;
@@ -74,10 +76,19 @@ public class View {
         io.print("~~=~~=~~ Create a new flooring order! ~~=~~=~~");
     }
 
-    public PartialOrder getNewOrderInfo() {
+    public PartialOrder getNewOrderInfo(List<State> stateList, List<Products> productList) {
+        String stateStrings = "";
+        for (State state : stateList){
+            stateStrings += state.toString() + " ";
+        }
+        String productStrings = "";
+        for (Products product : productList) {
+            productStrings += product.toString() + " ";
+        }
+        
         String customerName = io.readString("Please enter the name on the order");
-        String orderState = io.readString("Please enter what state " + customerName + "'s order is in :" + " OH, PA, MI, or IN.");
-        String productType = io.readString("Please enter which product " + customerName + " would like, please enter Carpet, Laminate, Tile, or Wood");
+        String orderState = io.readString("Please enter what state " + customerName + "'s order is in : " + stateStrings);
+        String productType = io.readString("Please enter which product " + customerName + " would like, please enter " + productStrings);
         BigDecimal area = io.readBigDecimal("Please enter the SqFt Area of " + productType + " you would like to purchase");
         PartialOrder partialOrder = new PartialOrder(customerName, orderState, productType, area);
         return partialOrder;
@@ -148,7 +159,7 @@ public class View {
         PartialOrder editedOrder = new PartialOrder(order.getCustomerName(), order.getOrderState(), order.getProductType(), order.getArea(), order.getOrderNumber());
 
         io.print("The customers name is " + order.getCustomerName());
-        String changeName = io.readString("Would you like to change the customer's Name? Y for Yes, or press Enter to keep it the same");
+        String changeName = io.readString("Would you like to change the Name on the Order? Y for Yes, or press Enter to keep it the same");
         if (changeName.equals("Y")) {
             editedOrder.setCustomerName(io.readString("What would you like to change the name to?"));
         } else {

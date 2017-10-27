@@ -139,6 +139,8 @@ public class OrdersDaoTest {
          */
         @Test
         public void testGetMode() throws Exception {
+            dao.getMode();
+            assertEquals(true, dao.getMode());
         }
 
 }

@@ -46,4 +46,9 @@ public class State {
     public void setStateTax(BigDecimal stateTax) {
         this.stateTax = stateTax;
     }
+    
+    @Override
+    public String toString() {
+        return this.getState();
+    }
 }

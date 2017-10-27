@@ -10,7 +10,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
 
@@ -55,5 +57,11 @@ public class ProductsDaoFileImpl implements ProductsDao {
     public Products getProduct(String productType) throws FlooringPersistenceException {
         loadProducts();
         return products.get(productType);
+    }
+    
+    public List<Products> getProductList() throws FlooringPersistenceException {
+        loadProducts();
+        List<Products> productList = new ArrayList<>(products.values());
+        return productList; 
     }
 }
