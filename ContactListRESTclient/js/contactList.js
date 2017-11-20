@@ -1,109 +1,216 @@
+$(document).ready(function () {
 
-$(document).ready(function() {
-  getSnacks();
+    loadContacts();
 
-  // MAKE PURCHASE BUTTON
-  $('#makePurchaseBtn').click(function() {
-    $("#changeMsg").val('');
-    var itemNum = $('#itemNum').val();
-    var money = document.getElementById('balance').value;
-    $.ajax({
-      type: 'GET',
-      url: 'http://localhost:8080/money/' + money + '/' + 'item/' + itemNum,
-      success: function() {
-        itemCost$ = $('#item' + itemNum + 'Price').text();
-        itemCost = Math.round(parseFloat(itemCost$.substring(1,itemCost$.length)) * 100);
-        money = Math.round(parseFloat(money) * 100);
-        var updatedBalance = ((money - itemCost) / 100).toString();
-        $('#balance').val(updatedBalance);
-        $('#message').val('Thank You!!!');
-        getSnacks();
-      },
-      error: function(response) {
-        var obj = JSON.parse(response.responseText);
-        $('#message').val(obj.message);
-      }
-    });
-  });
-  // CHANGE RETURN BUTTON
-  $('#changeBtn').click(function() {
-    var balanceInPennies = Math.round(parseFloat($('#balance').val()) * 100);
-    var quarters = Math.floor(balanceInPennies / 25);
-    balanceInPennies %= 25;
-    var dimes = Math.floor(balanceInPennies / 10);
-    balanceInPennies %= 10;
-    var nickels = Math.floor(balanceInPennies / 5);
-    balanceInPennies %= 5;
-    var change = {"quarters":quarters, "dimes":dimes, "nickels":nickels,"pennies":balanceInPennies};
-    displayChange(change);
-    $('#balance').val('0.00');
-    $('#itemNum').val('');
-    $('#message').val('');
-  });
-  // ADD MONEY BUTTONS
-  $('#addDollarBtn').click(function() {
-    $("#changeMsg").val('');
-    var balance = parseFloat(document.getElementById('balance').value) + 1.00;
-    document.getElementById('balance').value = balance.toString();
-  });
-  $('#addQuarterBtn').click(function() {
-    $("#changeMsg").val('');
-    var balance = parseFloat($('#balance').val()) + .25;
-    $('#balance').val(balance.toString());
-  });
-  $('#addDimeBtn').on('click', function() {
-    $("#changeMsg").val('');
-    var balance = Math.round(parseFloat(document.getElementById('balance').value) * 100 + 10) / 100;
-    document.getElementById('balance').value = balance.toString();
-  });
-  $('#addNickelBtn').click(function() {
-    $("#changeMsg").val('');
-    var balance = Math.round(parseFloat($('#balance').val()) * 100 + 5) / 100;
-    $('#balance').val(balance.toString());
-  });
-});
-// GET AND DISPLAY SNACKS
-function getSnacks() {
-  $('#snackColumn').empty();
-  $.ajax({
-    type: 'GET',
-    url: 'http://localhost:8080/items',
-    success: function(snacks) {
-      var rowNumber = 0;
-      for (i = 1; i <= snacks.length; i++) {
-        if ((i-1)%3 == 0) {
-          rowNumber++;
-          $('#snackColumn').append('<div id="row' + rowNumber + '" class="row"></div>');
+    // Add Button onclick handler
+    $('#add-button').click(function (event) {
+
+        // check for errors and display any that we have
+        // pass the input associated with the add form to the validation function
+        var haveValidationErrors = checkAndDisplayValidationErrors($('#add-form').find('input'));
+
+        // if we have errors, bail out by returning false
+        if (haveValidationErrors) {
+            return false;
         }
-        var panel = '<div class="col-sm-4"><div class="panel panel-default"><div class="panel-body">';
-        panel += '<p class="text-left itemNumber">' + snacks[i - 1].id + '</p>';
-        panel += '<p class="text-center">' + snacks[i - 1].name + '</p>';
-        panel += '<p class="text-center" id="item' + i + 'Price">$' + snacks[i - 1].price + '</p>';
-        panel += '<br><p class="text-center">Quantity Left: ' + snacks[i - 1].quantity + '</p>';
-        panel += '</div></div></div>';
-        $('#row' + rowNumber).append(panel);
-      }
-      // PANEL HOVER EFFECT AND PANEL CLICK TO SELECT SNACK
-      $('.panel-body').hover(function() {
-        $(this).css("background-color","lightgray");},
-        function() {
-          $(this).css("background-color","white");
+
+        // if we made it here, there are no errors so make the ajax call
+        $.ajax({
+            type: 'POST',
+            url: 'http://localhost:8080/contact',
+            data: JSON.stringify({
+                firstName: $('#add-first-name').val(),
+                lastName: $('#add-last-name').val(),
+                company: $('#add-company').val(),
+                phone: $('#add-phone').val(),
+                email: $('#add-email').val()
+            }),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            },
+            'dataType': 'json',
+            success: function(data, status) {
+                // clear errorMessages
+                $('#errorMessages').empty();
+               // Clear the form and reload the table
+                $('#add-first-name').val('');
+                $('#add-last-name').val('');
+                $('#add-company').val('');
+                $('#add-phone').val('');
+                $('#add-email').val('');
+                loadContacts();
+            },
+            error: function() {
+                $('#errorMessages')
+                   .append($('<li>')
+                   .attr({class: 'list-group-item list-group-item-danger'})
+                   .text('Error calling web service.  Please try again later.'));
+            }
         });
-        $('.panel-body').click(function() {
-          $('#itemNum').val($(this).find('.itemNumber').text());
-        });
-      },
-      error: function() {
-        alert('Error: Problem connecting to web service. Please try again later.');
-      }
     });
-  }
-  // DISPLAY CHANGE
-  function displayChange(change) {
-    var changeMsg = "" + change.quarters + " Quarters ";
-    changeMsg += change.dimes + " Dimes ";
-    changeMsg += change.nickels + " Nickels ";
-    changeMsg += change.pennies + " Pennies";
-    $('#changeMsg').val(changeMsg);
-  }
-  //author: Travis Rogers
+
+    // Update Button onclick handler
+    $('#edit-button').click(function (event) {
+
+        // check for errors and display any that we have
+        // pass the input associated with the edit form to the validation function
+        var haveValidationErrors = checkAndDisplayValidationErrors($('#edit-form').find('input'));
+
+        // if we have errors, bail out by returning false
+        if (haveValidationErrors) {
+            return false;
+        }
+
+        // if we get to here, there were no errors, so make the Ajax call
+        $.ajax({
+           type: 'PUT',
+           url: 'http://localhost:8080/contact/' + $('#edit-contact-id').val(),
+           data: JSON.stringify({
+             contactId: $('#edit-contact-id').val(),
+             firstName: $('#edit-first-name').val(),
+             lastName: $('#edit-last-name').val(),
+             company: $('#edit-company').val(),
+             email: $('#edit-email').val(),
+             phone: $('#edit-phone').val()
+           }),
+           headers: {
+             'Accept': 'application/json',
+             'Content-Type': 'application/json'
+           },
+           'dataType': 'json',
+            success: function() {
+                // clear errorMessages
+                $('#errorMessages').empty();
+                hideEditForm();
+                loadContacts();
+           },
+           error: function() {
+             $('#errorMessages')
+                .append($('<li>')
+                .attr({class: 'list-group-item list-group-item-danger'})
+                .text('Error calling web service.  Please try again later.'));
+           }
+       })
+    });
+});
+
+function loadContacts() {
+    // we need to clear the previous content so we don't append to it
+    clearContactTable();
+
+    // grab the the tbody element that will hold the rows of contact information
+    var contentRows = $('#contentRows');
+
+    $.ajax ({
+        type: 'GET',
+        url: 'http://localhost:8080/contacts',
+        success: function (data, status) {
+            $.each(data, function (index, contact) {
+                var name = contact.firstName + ' ' + contact.lastName;
+                var company = contact.company;
+                var id = contact.contactId;
+
+                var row = '<tr>';
+                    row += '<td>' + name + '</td>';
+                    row += '<td>' + company + '</td>';
+                    row += '<td><a onclick="showEditForm(' + id + ')">Edit</a></td>';
+                    row += '<td><a onclick="deleteContact(' + id + ')">Delete</a></td>';
+                    row += '</tr>';
+                contentRows.append(row);
+            });
+        },
+        error: function() {
+            $('#errorMessages')
+                .append($('<li>')
+                .attr({class: 'list-group-item list-group-item-danger'})
+                .text('Error calling web service.  Please try again later.'));
+        }
+    });
+}
+
+function clearContactTable() {
+    $('#contentRows').empty();
+}
+
+function showEditForm(contactId) {
+    // clear errorMessages
+    $('#errorMessages').empty();
+    // get the contact details from the server and then fill and show the
+    // form on success
+    $.ajax({
+        type: 'GET',
+        url: 'http://localhost:8080/contact/' + contactId,
+        success: function(data, status) {
+              $('#edit-first-name').val(data.firstName);
+              $('#edit-last-name').val(data.lastName);
+              $('#edit-company').val(data.company);
+              $('#edit-email').val(data.email);
+              $('#edit-phone').val(data.phone);
+              $('#edit-contact-id').val(data.contactId);
+          },
+          error: function() {
+            $('#errorMessages')
+               .append($('<li>')
+               .attr({class: 'list-group-item list-group-item-danger'})
+               .text('Error calling web service.  Please try again later.'));
+          }
+    });
+    $('#contactTableDiv').hide();
+    $('#editFormDiv').show();
+}
+
+function hideEditForm() {
+    // clear errorMessages
+    $('#errorMessages').empty();
+    // clear the form and then hide it
+    $('#edit-first-name').val('');
+    $('#edit-last-name').val('');
+    $('#edit-company').val('');
+    $('#edit-phone').val('');
+    $('#edit-email').val('');
+    $('#editFormDiv').hide();
+    $('#contactTableDiv').show();
+}
+
+function deleteContact(contactId) {
+    $.ajax ({
+        type: 'DELETE',
+        url: "http://localhost:8080/contact/" + contactId,
+        success: function (status) {
+            loadContacts();
+        }
+    });
+}
+
+// processes validation errors for the given input.  returns true if there
+// are validation errors, false otherwise
+function checkAndDisplayValidationErrors(input) {
+    // clear displayed error message if there are any
+    $('#errorMessages').empty();
+    // check for HTML5 validation errors and process/display appropriately
+    // a place to hold error messages
+    var errorMessages = [];
+
+    // loop through each input and check for validation errors
+    input.each(function() {
+        // Use the HTML5 validation API to find the validation errors
+        if(!this.validity.valid)
+        {
+            var errorField = $('label[for='+this.id+']').text();
+            errorMessages.push(errorField + ' ' + this.validationMessage);
+        }
+    });
+
+    // put any error messages in the errorMessages div
+    if (errorMessages.length > 0){
+        $.each(errorMessages,function(index,message){
+            $('#errorMessages').append($('<li>').attr({class: 'list-group-item list-group-item-danger'}).text(message));
+        });
+        // return true, indicating that there were errors
+        return true;
+    } else {
+        // return false, indicating that there were no errors
+        return false;
+    }
+}

@@ -23,3 +23,8 @@ hs_err_pid*
 /ConfirmGit/target/
 /FactorizorJSPServlet/target/
 /HelloMVC/target/
+/FactorizorSpringMVC/target/
+/ContactListSpringMVC/nbproject/
+/ContactListSpringMVC/target/
+/VendingMachineSpringMVC/target/
+/VendingMachineSpringMVC/nbproject/
