@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Vending Machine</title>
+  <link rel="stylesheet" href="css/bootstrap.css">
+</head>
+
+<body>
+  <div class="container">
+    <h1 class="text-center head" style="margin-top: 30px">Vending Machine Of Terror</h1>
+    <hr style="margin-bottom: 30px">
+
+    <div id="junkFood" class="col-md-9"></div>
+    <div class="col-md-3">
+      <div class="row">
+        <h3 class="text-center head">Wallet</h3>
+        <form>
+          <div class="form-group">
+            <input class="form-control" id="balance" type="text" value="0.00" disabled>
+          </div>
+        </form>
+        <div class="text-center">
+          <button id="dollarBtn" class="btn btn-default" type="button">Add Dollar</button>
+          <button id="quarterBtn" class="btn btn-default" type="button">Add Quarter</button>
+        </div>
+        <div class="text-center">
+          <button id="dimeBtn" class="btn btn-default" type="button">Add Dime</button>
+          <button id="nickelBtn" class="btn btn-default" type="button">Add Nickel</button>
+        </div>
+        <hr>
+      </div>
+      <div class="row">
+        <h3 class="text-center head">System Message</h3>
+        <form>
+          <div class="form-group">
+            <input id="message" class="form-control" disabled></input>
+          </div>
+          <div class="form-group">
+            <h3 class="head" style="display:inline">Item: </h3>
+            <input id="itemNum" class="form-control" type="text" style="width:75%;display:inline" disabled>
+          </div>
+        </form>
+        <button id="purchaseBtn" class="btn btn-default btn-block" type="button">Make Purchase</button>
+        <hr>
+      </div>
+      <div class="row" style="margin-bottom: 30px">
+        <h3 class="text-center head">Change</h3>
+        <form>
+          <div class="form-group">
+            <textarea id="changeOutput" class="form-control" row="2" disabled></textarea>
+          </div>
+        </form>
+        <button id="changeBtn" class="btn btn-default btn-block" type="button">Change Return</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/jquery-2.2.4.min.js"></script>
+  <script src="js/bootstrap.js"></script>
+  <script src="js/home.js"></script>
+</body>
+</html>
