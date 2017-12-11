@@ -9,6 +9,7 @@ import com.sg.superherosightings.dto.Hero;
 import com.sg.superherosightings.dto.Location;
 import com.sg.superherosightings.dto.Organization;
 import com.sg.superherosightings.dto.Sightings;
+import java.sql.Date;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDate;
@@ -40,7 +41,9 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
 
     private static final String SQL_SELECT_HERO = "select * from hero where heroId = ?";
 
-    private static final String SQL_SELECT_HERO_BY_SIGHTING_ID = "select * from hero_sightings where sighting_sightingId = ?";
+    private static final String SQL_SELECT_HERO_BY_SIGHTING_ID = "select hero.* from hero join hero_sightings on hero_sightings.hero_heroId = hero.heroId where sighting_sightingId = ?";
+    
+    private static final String SQL_SELECT_LOCATION_BY_SIGHTING_ID = "select location.* from sighting join location on sighting.location_locationId = location.locationId where sightingId = ?";
 
     private static final String SQL_SELECT_HERO_BY_ORGANIZATION_ID = "select * from hero_organization where organizationId = ?";
     
@@ -48,7 +51,7 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
 
     private static final String SQL_DELETE_HERO_ORGANIZATION = "delete from hero_organization where hero_heroId = ?";
 
-    private static final String SQL_DELETE_HERO_SIGHTING = "delete from hero_sightings where hero_heroId = ?";
+    private static final String SQL_DELETE_HERO_SIGHTING = "delete from hero_sightings where sighting_sightingId = ?";
 
     private static final String SQL_DELETE_ORGANIZATION = "delete from organization where organizationId = ?";
 
@@ -63,18 +66,18 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
 
     private static final String SQL_SELECT_ALL_ORGANIZATION = "select * from organization";
 
-    private static final String SQL_SELECT_ALL_SIGHTINGS = "select * from sightings";
+    private static final String SQL_SELECT_ALL_SIGHTINGS = "select * from sighting";
 
-    private static final String SQL_SELECT_SIGHTINGS_BY_HERO_ID = "select s.sightingId, s.sightingDate, from sightings s join hero_sightings hs on s.sightingId = hs.sighting_sightingId where hs.hero_heroId = ?";
+    private static final String SQL_SELECT_SIGHTINGS_BY_HERO_ID = "select s.sightingId, s.sightingDate, from sighting s join hero_sightings hs on s.sightingId = hs.sighting_sightingId where hs.hero_heroId = ?";
 
-    private static final String SQL_SELECT_ORGANIZATIONS_BY_HERO_ID = "select o.organizationId, o.setName, o.setDescription, o.setAddress, o.setState, o.setZipCode from organization o join hero_organization ho on o.organizationId = ho.organization_organizationId where ho.hero_heroId = ?";
+    private static final String SQL_SELECT_ORGANIZATIONS_BY_HERO_ID = "select o.organizationId, o.name, o.description, o.address, o.state, o.zipcode from organization o join hero_organization ho on o.organizationId = ho.organization_organizationId where ho.hero_heroId = ?";
 
 //    private static final String SQL_SELECT_HERO_BY_LOCATION_ID = "select * from heros where locationId = ?";
     private static final String SQL_INSERT_LOCATIONS = "insert into location (name, address, state, zipCode, description, latitude, longitude) values (?, ?, ?, ?, ?, ?, ?)";
 
     private static final String SQL_INSERT_ORGANIZATIONS = "insert into organization (name, description, address, state, zipCode) values (?, ?, ?, ?, ?)";
 
-    private static final String SQL_INSERT_SIGHTINGS = "insert into sighting (hero_heroId, location_locationId, date) values (?, ?, ?)";
+    private static final String SQL_INSERT_SIGHTINGS = "insert into sighting ( location_locationId, date) values (?, ?)";
     
     private static final String SQL_INSERT_HERO_ORGANIZATIONS = "insert into hero_organization (hero_heroId, organization_organizationId) values (?, ?)";
     
@@ -85,6 +88,8 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
     private static final String SQL_SELECT_SIGHTING = "select * from sighting where sightingId = ?";
     
     private static final String SQL_SELECT_LOCATION = "select * from location where locationId = ?";
+    
+    private static final String SQL_DELETE_SIGHTING_BY_LOCATION = "delete from sighting where location_locationId = ?";
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -159,10 +164,16 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
         jdbcTemplate.update(SQL_INSERT_LOCATIONS, location.getLocationName(),
                 location.getAddress(), location.getState(), location.getZipCode(),
                 location.getLocationDescription(), location.getLatitude(), location.getLongitude());
+        
+        int locationId = jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class);
+        location.setLocationId(locationId);
+        
+        
     }
 
     @Override
     public void deleteLocation(int locationId) {
+        jdbcTemplate.update(SQL_DELETE_SIGHTING_BY_LOCATION, locationId);
         jdbcTemplate.update(SQL_DELETE_LOCATION, locationId);
     }
 
@@ -191,6 +202,7 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
     }
 
     @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void addOrganization(Organization organization) {
         jdbcTemplate.update(SQL_INSERT_ORGANIZATIONS,
                 organization.getOrganizationName(),
@@ -229,19 +241,18 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
     }
 
     @Override
-    public List<Organization> getOrganizationByHero(int heroId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
+    @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
     public void addSighting(Sightings sighting) {
-        jdbcTemplate.update(SQL_INSERT_SIGHTINGS, sighting.getSightingLocation().getLocationId(), sighting.getDateSighted());
+        jdbcTemplate.update(SQL_INSERT_SIGHTINGS, sighting.getSightingLocation().getLocationId(), Date.valueOf(sighting.getDateSighted()));
+        int sightingId = jdbcTemplate.queryForObject("select LAST_INSERT_ID()", Integer.class);
         
+        sighting.setSightingId(sightingId);
         insertHeroSightings(sighting);
     }
 
     @Override
     public void deleteSighting(int sightingId) {
+        jdbcTemplate.update(SQL_DELETE_HERO_SIGHTING, sightingId);
         jdbcTemplate.update(SQL_DELETE_SIGHTING, sightingId);
     }
 
@@ -249,11 +260,27 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
     public void updateSighting(Sightings sighting) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
+    
+    private List<Hero> findHerosForSighting(Sightings sighting) {
+        List<Hero> heroList = jdbcTemplate.query(SQL_SELECT_HERO_BY_SIGHTING_ID, new HeroMapper(), sighting.getSightingId());
+        for (Hero currentHero : heroList) {
+            currentHero.setOrganizations(findOrganizationsForHero(currentHero));
+        }
+        return heroList;
+    }
+    
+    private Location findLocationForSighting(Sightings sighting) {
+        return jdbcTemplate.queryForObject(SQL_SELECT_LOCATION_BY_SIGHTING_ID, new LocationMapper(), sighting.getSightingId());
+    }
 
     @Override
     public Sightings getSightingById(int sightingId) {
         try { 
-            return jdbcTemplate.queryForObject(SQL_SELECT_SIGHTING, new SightingMapper(), sightingId);
+            Sightings sighting = jdbcTemplate.queryForObject(SQL_SELECT_SIGHTING, new SightingMapper(), sightingId);
+            sighting.setHerosSighted(findHerosForSighting(sighting));
+            sighting.setSightingLocation(findLocationForSighting(sighting));
+            
+            return sighting;
         } catch (EmptyResultDataAccessException ex) {
             return null;
         }
@@ -262,11 +289,6 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
     @Override
     public List<Sightings> getAllSightings() {
         return jdbcTemplate.query(SQL_SELECT_ALL_SIGHTINGS, new SightingMapper());
-    }
-
-    @Override
-    public List<Sightings> getAllSightingByHeroId(int heroId) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
@@ -299,7 +321,10 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
     }
 
     private List<Organization> findOrganizationsForHero(Hero hero) {
-        return jdbcTemplate.query(SQL_SELECT_ORGANIZATIONS_BY_HERO_ID, new OrganizationMapper(), hero.getHeroId());
+        List<Organization> organizationList = jdbcTemplate.query(SQL_SELECT_ORGANIZATIONS_BY_HERO_ID, new OrganizationMapper(), hero.getHeroId());
+        
+        return organizationList;
+    
     }
 
     private List<Hero> associateOrganizationsWithHeros(List<Hero> heroList) {
@@ -326,7 +351,7 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
         final List<Hero> heroes = sighting.getHerosSighted();
                 
         for (Hero currentHero : heroes) {
-            jdbcTemplate.update(SQL_INSERT_HERO_SIGHTINGS, sightingId, currentHero.getHeroId());
+            jdbcTemplate.update(SQL_INSERT_HERO_SIGHTINGS, currentHero.getHeroId(), sightingId);
         }
     }
 

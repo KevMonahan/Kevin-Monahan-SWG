@@ -55,10 +55,7 @@ public interface SuperHeroDao {
     
     public Organization getOrganizationById (int organizationId);
     
-    public List<Organization> getAllOrganizations();
-    
-    public List<Organization> getOrganizationByHero (int heroId);
-    
+    public List<Organization> getAllOrganizations();    
     
     public void addSighting(Sightings sighting);
     
@@ -69,8 +66,6 @@ public interface SuperHeroDao {
     public Sightings getSightingById(int sightingId);
     
     public List<Sightings> getAllSightings();
-    
-    public List<Sightings> getAllSightingByHeroId(int heroId);
     
     public List<Sightings> getAllSightingByLocationId (int locationId);
     

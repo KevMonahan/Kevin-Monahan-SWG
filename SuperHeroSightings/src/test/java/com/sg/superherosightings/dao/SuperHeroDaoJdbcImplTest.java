@@ -9,9 +9,15 @@ import com.sg.superherosightings.dto.Hero;
 import com.sg.superherosightings.dto.Location;
 import com.sg.superherosightings.dto.Organization;
 import com.sg.superherosightings.dto.Sightings;
+import java.math.BigDecimal;
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Month;
+import java.util.ArrayList;
 import java.util.List;
-import org.junit.After;
 import org.junit.AfterClass;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -67,225 +73,93 @@ public class SuperHeroDaoJdbcImplTest {
         }
     }
 
-    @After
-    public void tearDown() {
+    @Test
+    public void addGetAndDeleteOrganization() {
+        Organization organization = new Organization();
+
+        organization.setOrganizationName("Justice League");
+        organization.setDescription("A collection of DC superheroes");
+        organization.setAddress("12345 Justice Avenue");
+        organization.setState("New York");
+        organization.setZipCode("55454");
+
+        dao.addOrganization(organization);
+
+        Organization fromDao = dao.getOrganizationById(organization.getOrganizationId());
+        assertEquals(fromDao, organization);
+        dao.deleteOrganization(organization.getOrganizationId());
+        assertNull(dao.getOrganizationById(organization.getOrganizationId()));
     }
 
-    /**
-     * Test of setJdbcTemplate method, of class SuperHeroDaoJdbcImpl.
-     */
     @Test
-    public void testSetJdbcTemplate() {
+    public void addGetAndDeleteLocation() {
+        Location location = new Location();
+        location.setLocationName("movie theater");
+        location.setAddress("1800 S Washington Ave");
+        location.setState("Minnesota");
+        location.setZipCode("55454");
+        location.setLocationDescription("Actually an apartment Complex");
+        location.setLatitude(new BigDecimal("35.483724"));
+        location.setLongitude(new BigDecimal("112.23945"));
+
+        dao.addLocation(location);
+
+        Location fromDao = dao.getLocationById(location.getLocationId());
+        assertEquals(fromDao, location);
+        dao.deleteLocation(location.getLocationId());
+        assertNull(dao.getLocationById(location.getLocationId()));
+
+    }
+    
+    @Test
+    public void addGetAndDeleteHero() {
+        Hero hero = new Hero();
+        hero.setName("AquaMan");
+        hero.setDescription("The most useless Hero, until played by Jason Mamoa");
+        hero.setSuperPower("Ability to talk with fish");
+        hero.setOrganizations(new ArrayList<>());
+        dao.addHero(hero);
+        Hero fromDao = dao.getHeroById(hero.getHeroId());
+        
+        assertEquals(fromDao, hero);
+        dao.deleteHero(hero.getHeroId());
+        assertNull(dao.getHeroById(hero.getHeroId()));
     }
 
-    /**
-     * Test of addHero method, of class SuperHeroDaoJdbcImpl.
-     */
     @Test
-    public void testAddHero() {
-    }
+    public void addGetAndDeleteSighting() {
+        Location location = new Location();
+        location.setLocationName("movie theater");
+        location.setAddress("1800 S Washington Ave");
+        location.setState("Minnesota");
+        location.setZipCode("55454");
+        location.setLocationDescription("Actually an apartment Complex");
+        location.setLatitude(new BigDecimal("35.483724"));
+        location.setLongitude(new BigDecimal("112.23945"));
+        
+        dao.addLocation(location);
+        
+        Hero hero = new Hero();
+        hero.setName("AquaMan");
+        hero.setDescription("The most useless Hero, until played by Jason Mamoa");
+        hero.setSuperPower("Ability to talk with fish");
+        hero.setOrganizations(new ArrayList<>());
+        dao.addHero(hero);
+        List<Hero> herosSighted = new ArrayList<>();
+        herosSighted.add(hero);
 
-    /**
-     * Test of deleteHero method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testDeleteHero() {
-    }
-
-    /**
-     * Test of updateHero method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testUpdateHero() {
-    }
-
-    /**
-     * Test of getHeroById method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetHeroById() {
-    }
-
-    /**
-     * Test of getAllHeros method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllHeros() {
-    }
-
-    /**
-     * Test of getAllHerosBySighting method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllHerosBySighting() {
-    }
-
-    /**
-     * Test of getAllHerosByOrganization method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllHerosByOrganization() {
-    }
-
-    /**
-     * Test of getAllHerosByLocation method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllHerosByLocation() {
-    }
-
-    /**
-     * Test of addLocation method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testAddLocation() {
-    }
-
-    /**
-     * Test of deleteLocation method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testDeleteLocation() {
-    }
-
-    /**
-     * Test of updateLocation method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testUpdateLocation() {
-    }
-
-    /**
-     * Test of getLocationById method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetLocationById() {
-    }
-
-    /**
-     * Test of getAllLocations method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllLocations() {
-    }
-
-    /**
-     * Test of getAllLocationsByHero method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllLocationsByHero() {
-    }
-
-    /**
-     * Test of deleteOrganization method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testDeleteOrganization() {
-    }
-
-    /**
-     * Test of updateOrganization method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testUpdateOrganization() {
-    }
-
-    /**
-     * Test of getOrganizationById method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetOrganizationById() {
-    }
-
-    /**
-     * Test of getAllOrganizations method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllOrganizations() {
-    }
-
-    /**
-     * Test of getOrganizationByHero method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetOrganizationByHero() {
-    }
-
-    /**
-     * Test of addSighting method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testAddSighting() {
-    }
-
-    /**
-     * Test of deleteSighting method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testDeleteSighting() {
-    }
-
-    /**
-     * Test of updateSighting method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testUpdateSighting() {
-    }
-
-    /**
-     * Test of getSightingById method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetSightingById() {
-    }
-
-    /**
-     * Test of getAllSightings method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllSightings() {
-    }
-
-    /**
-     * Test of getAllSightingByHeroId method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllSightingByHeroId() {
-    }
-
-    /**
-     * Test of getAllSightingByLocationId method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllSightingByLocationId() {
-    }
-
-    /**
-     * Test of getAllSightingsByDate method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetAllSightingsByDate() {
-    }
-
-    /**
-     * Test of getHeroBySighting method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetHeroBySighting() {
-    }
-
-    /**
-     * Test of getHeroByLocation method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetHeroByLocation() {
-    }
-
-    /**
-     * Test of getLocationByHero method, of class SuperHeroDaoJdbcImpl.
-     */
-    @Test
-    public void testGetLocationByHero() {
+        dao.addLocation(location);
+        Sightings sighting = new Sightings();
+        sighting.setSightingLocation(location);
+        sighting.setDateSighted(LocalDate.now());
+        sighting.setHerosSighted(herosSighted);
+        
+        dao.addSighting(sighting);
+        
+        Sightings fromDao = dao.getSightingById(sighting.getSightingId());
+        assertEquals(fromDao, sighting);
+        dao.deleteSighting(sighting.getSightingId());
+        assertNull(dao.getSightingById(sighting.getSightingId()));
     }
 
 }
