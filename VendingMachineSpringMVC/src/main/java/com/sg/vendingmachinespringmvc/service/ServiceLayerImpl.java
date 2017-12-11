@@ -51,7 +51,7 @@ public class ServiceLayerImpl implements ServiceLayer{
     }
     @Override
     public void makePurchase() {
-        if (selection != 0) {
+        if (selection > 0) {
 
             JunkFood junkFood = junkFoodDao.getJunkFoodById(selection);
             BigDecimal selectionPrice = junkFood.getPrice();

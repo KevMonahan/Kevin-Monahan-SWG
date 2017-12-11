@@ -6,7 +6,7 @@
 <html>
     <head>
         <title>Vending Machine</title>
-        
+
         <link href="${pageContext.request.contextPath}/css/bootstrap.min.css" rel="stylesheet">        
     </head>
     <body>
@@ -76,7 +76,7 @@
                 </div>
             </div>
         </div>
-        
+
         <script src="${pageContext.request.contextPath}/js/jquery-3.1.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/js/bootstrap.min.js"></script>
 

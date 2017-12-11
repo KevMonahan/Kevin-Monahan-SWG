@@ -51,15 +51,25 @@ public class ServiceLayerImplTest {
         service.setWallet(new BigDecimal("0.00"));
         service.addMoney("dollar");
         assertEquals( new BigDecimal("1.00"), service.getWallet());
+        
         service.setWallet(new BigDecimal("0.00"));
         service.addMoney("quarter");
         assertEquals(new BigDecimal("0.25"), service.getWallet());
+        
         service.setWallet(new BigDecimal("0.00"));
         service.addMoney("dime");
         assertEquals( new BigDecimal("0.10"), service.getWallet());
+        
         service.setWallet(new BigDecimal("0.00"));
         service.addMoney("nickel");
         assertEquals( new BigDecimal("0.05"), service.getWallet());
+        
+        service.setWallet(new BigDecimal("0.00"));
+        
+        service.addMoney("dollar");
+        service.addMoney("dollar");
+        service.addMoney("nickel");
+        assertEquals(new BigDecimal("2.05"), service.getWallet());
     }
 
     /**
@@ -71,8 +81,9 @@ public class ServiceLayerImplTest {
         ServiceLayer service = new ServiceLayerImpl(dao);
         
         service.setSelection(7);
+        service.setWallet(new BigDecimal("4.00"));
         service.makePurchase();
-        assertEquals(3, service.getJunkFoodById(7).getQuantity());
+        assertEquals(2, service.getJunkFoodById(7).getQuantity());
         
         service.setSelection(4);
         service.setWallet(new BigDecimal("1.30"));
