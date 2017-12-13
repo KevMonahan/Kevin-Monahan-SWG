@@ -17,68 +17,57 @@ import java.util.List;
  * @author user
  */
 public interface SuperHeroDao {
-
+    //tested
     public void addHero(Hero hero);
 
     public void deleteHero(int heroId);
-    
+
     public void updateHero(Hero hero);
-    
-    public Hero getHeroById(int heroId);
-    
-    public List<Hero> getAllHeros();
-    
-    public List<Hero> getAllHerosBySighting(int sightingId);
-    
-    public List<Hero> getAllHerosByOrganization(int organizationId);
-    
-    public List<Hero> getAllHerosByLocation(int locationId);
-    
-    
+
     public void addLocation(Location location);
-    
+
     public void deleteLocation(int locationId);
-    
+
     public void updateLocation(Location location);
+
+    public void addOrganization(Organization organization);
+
+    public void deleteOrganization(int OrganizationId);
+
+    public void updateOrganization(Organization organization);
+
+    public void addSighting(Sightings sighting);
+
+    public void deleteSighting(int sightingId);
+
+    public void updateSighting(Sightings sighting);
     
     public Location getLocationById(int locationId);
     
+    public Organization getOrganizationById(int organizationId);
+    
+    public Sightings getSightingById(int sightingId);
+
+    public Hero getHeroById(int heroId);
+    
     public List<Location> getAllLocations();
+    
+    public List<Sightings> getAllSightings();
+
+    public List<Hero> getAllHeros();
+    
+    public List<Organization> getAllOrganizations();     
     
     public List<Location> getAllLocationsByHero(int heroId);
     
-    public void addOrganization(Organization organization);
-    
-    public void deleteOrganization(int OrganizationId);
-    
-    public void updateOrganization(Organization organization);
-    
-    public Organization getOrganizationById (int organizationId);
-    
-    public List<Organization> getAllOrganizations();    
-    
-    public void addSighting(Sightings sighting);
-    
-    public void deleteSighting(int sightingId);
-    
-    public void updateSighting(Sightings sighting);
-    
-    public Sightings getSightingById(int sightingId);
-    
-    public List<Sightings> getAllSightings();
-    
-    public List<Sightings> getAllSightingByLocationId (int locationId);
-    
+    public List<Sightings> getAllSightingByLocationId(int locationId);
+
     public List<Sightings> getAllSightingsByDate(LocalDate date);
-            
-            
     
-    public void getHeroBySighting();
+    public List<Hero> getAllHerosBySighting(int sightingId);    
     
-    public void getHeroByLocation();
+    public List<Hero> getAllHerosByOrganization(int organizationId);    
     
-    public void getLocationByHero();
-    
-    
-    
+    public List<Hero> getAllHerosByLocation(int locationId);    
+//untested
 }
