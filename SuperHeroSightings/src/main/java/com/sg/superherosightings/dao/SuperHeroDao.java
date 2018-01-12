@@ -69,5 +69,7 @@ public interface SuperHeroDao {
     public List<Hero> getAllHerosByOrganization(int organizationId);    
     
     public List<Hero> getAllHerosByLocation(int locationId);    
+    
+    public List<Sightings> getTenRecentSightings();
 //untested
 }

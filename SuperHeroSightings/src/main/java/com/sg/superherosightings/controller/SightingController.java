@@ -45,6 +45,12 @@ public class SightingController {
         
         return "sighting";
     }
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public String home(Model model) {
+        List<Sightings> sightings = dao.getTenRecentSightings();
+        model.addAttribute("sightings", sightings);
+        return "/index";
+    }
     
     @RequestMapping(value = "/createSighting", method = RequestMethod.POST)
     public String createSighting(HttpServletRequest request) {

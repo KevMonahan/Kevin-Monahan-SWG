@@ -104,6 +104,8 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
     private static final String SQL_SELECT_SIGHTINGS_BY_LOCATION_ID = "select * from sighting where location_locationId = ?";
 
     private static final String SQL_SELECT_SIGHTINGS_BY_DATE = "select * from sighting where date = ?";
+    
+    private static final String SQL_SELECT_TEN_SIGHTINGS = "select * from sighting order by sighting.sightingDate desc limit 0,10";
 
     @Override
     @Transactional(propagation = Propagation.REQUIRED, readOnly = false)
@@ -333,6 +335,13 @@ public class SuperHeroDaoJdbcImpl implements SuperHeroDao {
     @Override
     public List<Sightings> getAllSightingsByDate(LocalDate date) {
         return jdbcTemplate.query(SQL_SELECT_SIGHTINGS_BY_DATE, new SightingMapper(), Date.valueOf(date));
+    }
+    
+    @Override
+    public List<Sightings> getTenRecentSightings() {
+        List<Sightings> sightingList = jdbcTemplate.query(SQL_SELECT_TEN_SIGHTINGS, new SightingMapper());
+        
+        return associateLocationAndHerosWithSighting(sightingList);
     }
 
 //    private List<Sightings> findSightingsForHero(Hero hero) {
