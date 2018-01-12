@@ -23,6 +23,27 @@ public class Organization {
     public void setAddress(String address) {
         this.address = address;
     }
+    
+    public Organization() {
+    }
+
+    public Organization(String organizationName, String address, String state, String zipCode, String description) {
+        if (organizationName != null && organizationName.trim().length() > 0) {
+            this.organizationName = organizationName;
+        }
+        if (address != null && address.trim().length() > 0) {
+            this.address = address;
+        }
+        if (state != null && state.trim().length() > 0) {
+            this.state = state;
+        }
+        if (zipCode != null && zipCode.trim().length() > 0) {
+        this.zipCode = zipCode;
+        }
+        if (description != null && description.trim().length() > 0) {
+            this.description = description;
+        }
+    }
 
     public void setState(String state) {
         this.state = state;

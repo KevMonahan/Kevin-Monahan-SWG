@@ -25,6 +25,22 @@ public class Hero {
     public int getHeroId() {
         return heroId;
     }
+    
+    public Hero() {
+
+    }
+
+    public Hero(String name, String description, String superPower) {
+        if (name != null && name.trim().length() > 0) {
+            this.name = name;
+        }
+        if (superPower != null && superPower.trim().length() > 0) {
+            this.superPower = superPower;
+        }
+        if (description != null && description.trim().length() > 0) {
+            this.description = description;
+        }
+    }
 
     /**
      * @param heroId the heroId to set

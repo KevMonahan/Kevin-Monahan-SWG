@@ -14,6 +14,7 @@ import java.util.Objects;
  * @author user
  */
 public class Location {
+
     private int locationId;
     private String locationName;
     private String address;
@@ -26,6 +27,31 @@ public class Location {
 
     public void setState(String state) {
         this.state = state;
+    }
+
+    public Location(String locationName, String address, String state, String zipCode, String locationDescription, BigDecimal latitude, BigDecimal longitude) {
+        if (locationName != null && locationName.trim().length() > 0) {
+            this.locationName = locationName;
+        }
+        if (address != null && address.trim().length() > 0) {
+            this.address = address;
+        }
+        if (state != null && state.trim().length() > 0) {
+            this.state = state;
+        }
+        if (zipCode != null && zipCode.trim().length() > 0) {
+
+            this.zipCode = zipCode;
+        }
+        if (locationDescription != null && locationDescription.trim().length() > 0) {
+            this.locationDescription = locationDescription;
+        }
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+    
+    public Location() {
+        
     }
 
     public void setZipCode(String zipCode) {
@@ -153,5 +179,4 @@ public class Location {
         return true;
     }
 
-    
 }

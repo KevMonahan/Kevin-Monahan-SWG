@@ -3,7 +3,7 @@
     Created on : Nov 17, 2017, 10:19:30 AM
     Author     : user
 --%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -38,8 +38,20 @@
                             Search
                         </a>
                     </li>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <li role="presentation">
+                            <a href="${pageContext.request.contextPath}/displayUserList">
+                                User Admin
+                            </a>
+                        </li>                        
+                    </sec:authorize>
                 </ul>    
             </div>
+            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                <p>Hello : ${pageContext.request.userPrincipal.name}
+                    | <a href="<c:url value="/j_spring_security_logout" />" > Logout</a>
+                </p>
+            </c:if>
             <sf:form class="form-horizontal" role="form" modelAttribute="contact"
                      action="editContact" method="POST">
                 <div class="form-group">
@@ -48,35 +60,35 @@
                         <sf:input type="text" class="form-control" id="add-first-name"
                                   path="firstName" placeholder="First Name"/>
                         <sf:errors path="firstName" cssclass="error"></sf:errors>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="add-last-name" class="col-md-4 control-label">Last Name:</label>
-                    <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="add-last-name" class="col-md-4 control-label">Last Name:</label>
+                        <div class="col-md-8">
                         <sf:input type="text" class="form-control" id="add-last-name"
                                   path="lastName" placeholder="Last Name"/>
                         <sf:errors path="lastName" cssclass="error"></sf:errors>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="add-company" class="col-md-4 control-label">Company:</label>                          
-                    <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="add-company" class="col-md-4 control-label">Company:</label>                          
+                        <div class="col-md-8">
                         <sf:input type="text" class="form-control" id="add-company"
                                   path="company" placeholder="Company"/>
                         <sf:errors path="company" cssclass="error"></sf:errors>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="add-email" class="col-md-4 control-label">Email:</label>
-                    <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="add-email" class="col-md-4 control-label">Email:</label>
+                        <div class="col-md-8">
                         <sf:input type="email" class="form-control" id="add-email"
                                   path="email" placeholder="Email"/>
                         <sf:errors path="email" cssclass="error"></sf:errors>
+                        </div>
                     </div>
-                </div>
-                <div class="form-group">
-                    <label for="add-phone" class="col-md-4 control-label">Phone:</label>
-                    <div class="col-md-8">
+                    <div class="form-group">
+                        <label for="add-phone" class="col-md-4 control-label">Phone:</label>
+                        <div class="col-md-8">
                         <sf:input type="tel" class="form-control" id="add-phone"
                                   path="phone" placeholder="Phone"/>
                         <sf:errors path="phone" cssclass="error"></sf:errors>

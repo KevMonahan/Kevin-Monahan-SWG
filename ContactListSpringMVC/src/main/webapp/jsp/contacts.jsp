@@ -3,6 +3,7 @@
     Created on : Nov 17, 2017, 9:06:27 AM
     Author     : user
 --%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -23,8 +24,20 @@
                     <li role="presentation"><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
                     <li role="presentation" class="active"><a href="${pageContext.request.contextPath}/displayContactsPage">Contacts</a></li>
                     <li role="presentation"><a href="${pageContext.request.contextPath}/displaySearchPage">Search</a></li>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <li role="presentation">
+                            <a href="${pageContext.request.contextPath}/displayUserList">
+                                User Admin
+                            </a>
+                        </li>                        
+                    </sec:authorize>
                 </ul>    
             </div>
+            <c:if test="${pageContext.request.userPrincipal.name != null}">
+                <p>Hello : ${pageContext.request.userPrincipal.name}
+                    | <a href="<c:url value="/j_spring_security_logout" />" > Logout</a>
+                </p>
+            </c:if>
 
 
             <div class="row">
@@ -48,18 +61,22 @@
                                     </a>
                                 </td>
                                 <td>
-                            <c:out value="${currentContact.company}"/>
-                            </td>
-                            <td>
-                                <a href="displayEditContactForm?contactId=${currentContact.contactId}">
-                                    Edit
-                                </a>
-                            </td>
-                            <td>
-                                <a href="deleteContact?contactId=${currentContact.contactId}">
-                                    Delete
-                                </a>
-                            </td>
+                                    <c:out value="${currentContact.company}"/>
+                                </td>
+                                <td>
+                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                        <a href="displayEditContactForm?contactId=${currentContact.contactId}">
+                                            Edit
+                                        </a>
+                                    </sec:authorize>
+                                </td>
+                                <td>
+                                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                                        <a href="deleteContact?contactId=${currentContact.contactId}">
+                                            Delete
+                                        </a>
+                                    </sec:authorize>
+                                </td>
                             </tr>
                         </c:forEach>
                     </table>                    
@@ -69,47 +86,48 @@
                     half of the row
                 -->
                 <div class="col-md-6">
-                    <h2>Add New Contact</h2>
-                    <form class="form-horizontal" 
-                          role="form" method="POST" 
-                          action="createContact">
-                        <div class="form-group">
-                            <label for="add-first-name" class="col-md-4 control-label">First Name:</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="firstName" placeholder="First Name"/>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <h2>Add New Contact</h2>
+                        <form class="form-horizontal" 
+                              role="form" method="POST" 
+                              action="createContact">
+                            <div class="form-group">
+                                <label for="add-first-name" class="col-md-4 control-label">First Name:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="firstName" placeholder="First Name"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-last-name" class="col-md-4 control-label">Last Name:</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="lastName" placeholder="Last Name"/>
+                            <div class="form-group">
+                                <label for="add-last-name" class="col-md-4 control-label">Last Name:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="lastName" placeholder="Last Name"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-company" class="col-md-4 control-label">Company:</label>
-                            <div class="col-md-8">
-                                <input type="text" class="form-control" name="company" placeholder="Company"/>
+                            <div class="form-group">
+                                <label for="add-company" class="col-md-4 control-label">Company:</label>
+                                <div class="col-md-8">
+                                    <input type="text" class="form-control" name="company" placeholder="Company"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-email" class="col-md-4 control-label">Email:</label>
-                            <div class="col-md-8">
-                                <input type="email" class="form-control" name="email" placeholder="Email"/>
+                            <div class="form-group">
+                                <label for="add-email" class="col-md-4 control-label">Email:</label>
+                                <div class="col-md-8">
+                                    <input type="email" class="form-control" name="email" placeholder="Email"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label for="add-phone" class="col-md-4 control-label">Phone:</label>
-                            <div class="col-md-8">
-                                <input type="tel" class="form-control" name="phone" placeholder="Phone"/>
+                            <div class="form-group">
+                                <label for="add-phone" class="col-md-4 control-label">Phone:</label>
+                                <div class="col-md-8">
+                                    <input type="tel" class="form-control" name="phone" placeholder="Phone"/>
+                                </div>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-4 col-md-8">
-                                <input type="submit" class="btn btn-default" value="Create Contact"/>
+                            <div class="form-group">
+                                <div class="col-md-offset-4 col-md-8">
+                                    <input type="submit" class="btn btn-default" value="Create Contact"/>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-
+                        </form>
+                    </sec:authorize>
                 </div> <!-- End col div -->
 
             </div>

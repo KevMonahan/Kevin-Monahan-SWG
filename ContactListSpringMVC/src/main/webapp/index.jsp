@@ -1,3 +1,4 @@
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="s" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
@@ -19,6 +20,9 @@
                 	<li role="presentation" class="active"><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
                 	<li role="presentation"><a href="${pageContext.request.contextPath}/displayContactsPage">Contacts</a></li>
                         <li role="presentation"><a href="${pageContext.request.contextPath}/displaySearchPage">Search</a></li>
+                    <sec:authorize access="hasRole('ROLE_ADMIN')">
+                        <li role="presentation"><a href="${pageContext.request.contextPath}/displayUserList">User Admin</a></li>                        
+                    </sec:authorize>
                 </ul>    
             </div>
             

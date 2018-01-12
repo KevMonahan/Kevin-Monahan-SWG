@@ -17,6 +17,8 @@ create table organization (
 `name` varchar(30) not null,
 `description` varchar(100) not null,
 `address` varchar(100) null,
+`state` varchar(20) null,
+`zipCode` varchar(20) null,
 primary key (organizationId)
 );
 
@@ -24,6 +26,8 @@ create table location (
 `locationId` int (10) unsigned not null auto_increment,
 `name` varchar(50) not null,
 `address` varchar(50) null,
+`state` varchar(50) null,
+`zipCode` varchar (20) null,
 `description` varchar(100) not null,
 `latitude` decimal (8,6) not null,
 `longitude` decimal (8,5) not null,
@@ -32,11 +36,9 @@ primary key (locationId)
 
 create table sighting (
 `sightingId` int (10) unsigned not null auto_increment,
-`hero_heroId` int (10) unsigned not null,
 `location_locationId` int (10) unsigned not null,
 `date` date not null,
 primary key (sightingId),
-foreign key (hero_heroId) references hero (heroId),
 foreign key (location_locationId) references location (locationId)
 );
 
