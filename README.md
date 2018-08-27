@@ -6,6 +6,6 @@ I intend to go back and create ReadMe files for the notable projects listed belo
 
 # Notable projects:
 
-Super Hero Sightings
-Vending Machine Spring MVC
-Vending Machine Rest
+1.Super Hero Sightings
+2.Vending Machine Spring MVC
+3.Vending Machine Rest
